@@ -21,4 +21,5 @@ func (r RouterCustomer) Handle(router *gin.Engine) {
 	customer := router.Group(basePath)
 	customer.POST("customer", r.CustomerRequestHandler.CreateCustomer)
 	customer.GET("customer/:id", r.CustomerRequestHandler.GetCustomerById)
+	customer.PUT("customer/:id", r.CustomerRequestHandler.UpdateCustomerById)
 }

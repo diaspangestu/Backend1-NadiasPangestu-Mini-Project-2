@@ -8,6 +8,7 @@ import (
 type CustomerRepositoryInterface interface {
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	GetCustomerById(id uint) (*entities.Customer, error)
+	UpdateCustomerById(id uint, customer *entities.Customer) (*entities.Customer, error)
 }
 
 type Customer struct {
@@ -33,6 +34,15 @@ func (repo Customer) GetCustomerById(id uint) (*entities.Customer, error) {
 	customer := &entities.Customer{}
 
 	err := repo.db.Model(&entities.Customer{}).Where("id = ?", id).First(customer).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return customer, nil
+}
+
+func (repo Customer) UpdateCustomerById(id uint, customer *entities.Customer) (*entities.Customer, error) {
+	err := repo.db.Model(&entities.Customer{}).Where("id = ?", id).Save(customer).Error
 	if err != nil {
 		return nil, err
 	}

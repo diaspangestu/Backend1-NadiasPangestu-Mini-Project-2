@@ -1,6 +1,8 @@
 package customer
 
-import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+import (
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+)
 
 type CustomerParam struct {
 	FirstName string `json:"first_name"`
@@ -10,6 +12,11 @@ type CustomerParam struct {
 }
 
 type SuccessCreate struct {
+	dto.Response
+	Data CustomerParam `json:"data"`
+}
+
+type SuccessUpdate struct {
 	dto.Response
 	Data CustomerParam `json:"data"`
 }

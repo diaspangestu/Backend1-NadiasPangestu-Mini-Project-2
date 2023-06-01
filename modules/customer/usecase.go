@@ -9,6 +9,7 @@ import (
 type UsecaseCustomerInterface interface {
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	GetCustomerById(id uint) (entities.Customer, error)
+	UpdateCustomerById(id uint, customer CustomerParam) (entities.Customer, error)
 }
 
 type UsecaseCustomer struct {
@@ -41,4 +42,26 @@ func (uc UsecaseCustomer) GetCustomerById(id uint) (entities.Customer, error) {
 	}
 
 	return *customer, nil
+}
+
+func (uc UsecaseCustomer) UpdateCustomerById(id uint, customer CustomerParam) (entities.Customer, error) {
+	// Get Existing Customer Data
+	existingCustomer, err := uc.customerRepo.GetCustomerById(id)
+	if err != nil {
+		return entities.Customer{}, err
+	}
+
+	existingCustomer.FirstName = customer.FirstName
+	existingCustomer.LastName = customer.LastName
+	existingCustomer.Email = customer.Email
+	existingCustomer.Avatar = customer.Avatar
+	existingCustomer.UpdatedAt = time.Now()
+
+	// Updated the Customer Data
+	updatedCustomer, err := uc.customerRepo.UpdateCustomerById(id, existingCustomer)
+	if err != nil {
+		return entities.Customer{}, err
+	}
+
+	return *updatedCustomer, nil
 }

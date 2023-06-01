@@ -26,14 +26,14 @@ func NewCustomerRequestHandler(
 }
 
 func (rh RequestHandlerCustomer) CreateCustomer(c *gin.Context) {
-	req := CustomerParam{}
+	request := CustomerParam{}
 
-	err := c.Bind(&req)
+	err := c.Bind(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
 	}
 
-	res, err := rh.ctrl.CreateCustomer(req)
+	res, err := rh.ctrl.CreateCustomer(request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
 	}
@@ -51,6 +51,30 @@ func (rh RequestHandlerCustomer) GetCustomerById(c *gin.Context) {
 	}
 
 	response, err := rh.ctrl.GetCustomerById(uint(customerID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (rh RequestHandlerCustomer) UpdateCustomerById(c *gin.Context) {
+	id := c.Param("id")
+	request := CustomerParam{}
+
+	// Bind JSON
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	// Parse id to uint
+	customerID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	response, err := rh.ctrl.UpdateCustomerById(uint(customerID), request)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
 	}
