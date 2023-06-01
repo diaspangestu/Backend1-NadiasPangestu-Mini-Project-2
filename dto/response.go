@@ -1,7 +1,8 @@
 package dto
 
 type Response struct {
-	Code    int
-	Message string
-	Data    any
+	Success      bool   `json:"success"`
+	MessageTitle string `json:"messageTitle"`
+	Message      string `json:"message"`
+	ResponseTime string `json:"responseTime"`
 }
