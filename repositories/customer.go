@@ -9,6 +9,7 @@ type CustomerRepositoryInterface interface {
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	GetCustomerById(id uint) (*entities.Customer, error)
 	UpdateCustomerById(id uint, customer *entities.Customer) (*entities.Customer, error)
+	DeleteCustomerById(id uint, customer *entities.Customer) error
 }
 
 type Customer struct {
@@ -48,4 +49,13 @@ func (repo Customer) UpdateCustomerById(id uint, customer *entities.Customer) (*
 	}
 
 	return customer, nil
+}
+
+func (repo Customer) DeleteCustomerById(id uint, customer *entities.Customer) error {
+	err := repo.db.Model(&entities.Customer{}).Where("id = ?", id).Delete(customer).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

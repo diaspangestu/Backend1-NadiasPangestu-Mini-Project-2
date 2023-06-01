@@ -81,3 +81,23 @@ func (rh RequestHandlerCustomer) UpdateCustomerById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (rh RequestHandlerCustomer) DeleteCustomerById(c *gin.Context) {
+	id := c.Param("id")
+
+	// Parse id to uint
+	customerID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	err = rh.ctrl.DeleteCustomerById(uint(customerID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "Delete Customer Data Successfully",
+	})
+}

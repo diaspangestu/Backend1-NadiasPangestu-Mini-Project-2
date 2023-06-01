@@ -22,4 +22,5 @@ func (r RouterCustomer) Handle(router *gin.Engine) {
 	customer.POST("customer", r.CustomerRequestHandler.CreateCustomer)
 	customer.GET("customer/:id", r.CustomerRequestHandler.GetCustomerById)
 	customer.PUT("customer/:id", r.CustomerRequestHandler.UpdateCustomerById)
+	customer.DELETE("customer/:id", r.CustomerRequestHandler.DeleteCustomerById)
 }

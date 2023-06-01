@@ -10,6 +10,7 @@ type UsecaseCustomerInterface interface {
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	GetCustomerById(id uint) (entities.Customer, error)
 	UpdateCustomerById(id uint, customer CustomerParam) (entities.Customer, error)
+	DeleteCustomerById(id uint) error
 }
 
 type UsecaseCustomer struct {
@@ -64,4 +65,14 @@ func (uc UsecaseCustomer) UpdateCustomerById(id uint, customer CustomerParam) (e
 	}
 
 	return *updatedCustomer, nil
+}
+
+func (uc UsecaseCustomer) DeleteCustomerById(id uint) error {
+	// Get existing Customer Data
+	existingData, err := uc.customerRepo.GetCustomerById(id)
+	if err != nil {
+		return err
+	}
+
+	return uc.customerRepo.DeleteCustomerById(id, existingData)
 }

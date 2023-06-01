@@ -6,6 +6,7 @@ type ControllerCustomerInterface interface {
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	GetCustomerById(id uint) (interface{}, error)
 	UpdateCustomerById(id uint, customer CustomerParam) (interface{}, error)
+	DeleteCustomerById(id uint) error
 }
 
 type ControllerCustomer struct {
@@ -82,4 +83,13 @@ func (ctrl ControllerCustomer) UpdateCustomerById(id uint, customer CustomerPara
 	}
 
 	return response, nil
+}
+
+func (ctrl ControllerCustomer) DeleteCustomerById(id uint) error {
+	err := ctrl.uc.DeleteCustomerById(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
