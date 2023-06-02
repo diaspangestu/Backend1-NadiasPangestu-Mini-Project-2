@@ -22,7 +22,7 @@ func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (entities.Actor, error) {
 		Password:   admin.Password,
 		RoleID:     2,
 		IsVerified: entities.False,
-		IsActive:   entities.False,
+		IsActived:  entities.False,
 		CreatedAt:  time.Now(),
 		UpdatedAt:  time.Now(),
 	}

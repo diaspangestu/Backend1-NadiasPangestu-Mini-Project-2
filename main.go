@@ -5,6 +5,7 @@ import (
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/db"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/modules/admin"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/modules/customer"
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/modules/superadmin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,6 +22,10 @@ func main() {
 	// Admin Handler
 	adminHandler := admin.NewRouter(db)
 	adminHandler.Handle(router)
+
+	// Superadmin Handler
+	superadminHandler := superadmin.NewRouter(db)
+	superadminHandler.Handle(router)
 
 	errRouter := router.Run(":8080")
 	if errRouter != nil {
