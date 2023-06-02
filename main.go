@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/db"
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/modules/admin"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/modules/customer"
 	"github.com/gin-gonic/gin"
 )
@@ -13,8 +14,13 @@ func main() {
 	// open connection db
 	db := db.InitDB()
 
+	// Customer Handler
 	customerHandler := customer.NewRouter(db)
 	customerHandler.Handle(router)
+
+	// Admin Handler
+	adminHandler := admin.NewRouter(db)
+	adminHandler.Handle(router)
 
 	errRouter := router.Run(":8080")
 	if errRouter != nil {
