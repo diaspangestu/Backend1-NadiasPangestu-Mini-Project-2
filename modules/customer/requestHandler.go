@@ -13,9 +13,7 @@ type RequestHandlerCustomer struct {
 	ctrl ControllerCustomer
 }
 
-func NewCustomerRequestHandler(
-	db *gorm.DB,
-) RequestHandlerCustomer {
+func NewCustomerRequestHandler(db *gorm.DB) RequestHandlerCustomer {
 	return RequestHandlerCustomer{
 		ctrl: ControllerCustomer{
 			uc: UsecaseCustomer{

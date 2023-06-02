@@ -9,9 +9,7 @@ type RouterCustomer struct {
 	CustomerRequestHandler RequestHandlerCustomer
 }
 
-func NewRouter(
-	db *gorm.DB,
-) RouterCustomer {
+func NewRouter(db *gorm.DB) RouterCustomer {
 	return RouterCustomer{CustomerRequestHandler: NewCustomerRequestHandler(db)}
 }
 
