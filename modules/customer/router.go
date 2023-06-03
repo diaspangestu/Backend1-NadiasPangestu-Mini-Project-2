@@ -14,11 +14,11 @@ func NewRouter(db *gorm.DB) RouterCustomer {
 }
 
 func (r RouterCustomer) Handle(router *gin.Engine) {
-	basePath := "/"
+	basePath := "/customer"
 
 	customer := router.Group(basePath)
-	customer.POST("customer", r.CustomerRequestHandler.CreateCustomer)
-	customer.GET("customer/:id", r.CustomerRequestHandler.GetCustomerById)
-	customer.PUT("customer/:id", r.CustomerRequestHandler.UpdateCustomerById)
-	customer.DELETE("customer/:id", r.CustomerRequestHandler.DeleteCustomerById)
+	customer.POST("/create", r.CustomerRequestHandler.CreateCustomer)
+	customer.GET("/:id", r.CustomerRequestHandler.GetCustomerById)
+	customer.PUT("/:id", r.CustomerRequestHandler.UpdateCustomerById)
+	customer.DELETE("/:id", r.CustomerRequestHandler.DeleteCustomerById)
 }

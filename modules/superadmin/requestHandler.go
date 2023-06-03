@@ -10,17 +10,34 @@ import (
 )
 
 type RequestHandlerSuperadmin struct {
-	ctrl ControllerRegisterApproval
+	ctrl ControllerSuperadmin
 }
 
 func NewSuperadminRequestHandler(db *gorm.DB) RequestHandlerSuperadmin {
 	return RequestHandlerSuperadmin{
-		ctrl: ControllerRegisterApproval{
+		ctrl: ControllerSuperadmin{
 			uc: UsecaseSuperadmin{
 				superadminRepo: repositories.NewSuperadmin(db),
 			},
 		},
 	}
+}
+
+// CreateCustomer Superadmin
+func (rh RequestHandlerSuperadmin) CreateCustomer(c *gin.Context) {
+	request := CustomerParam{}
+
+	err := c.Bind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	res, err := rh.ctrl.CreateCustomer(request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
 func (rh RequestHandlerSuperadmin) ApprovedAdminRegister(c *gin.Context) {

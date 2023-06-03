@@ -14,8 +14,9 @@ func NewRouter(db *gorm.DB) RouterAdmin {
 }
 
 func (r RouterAdmin) Handle(router *gin.Engine) {
-	basePath := "/"
+	basePath := "/admin"
 
 	admin := router.Group(basePath)
-	admin.POST("admin", r.AdminRequestHandler.RegisterAdmin)
+	admin.POST("/create-customer", r.AdminRequestHandler.CreateCustomer)
+	admin.POST("/register-admin", r.AdminRequestHandler.RegisterAdmin)
 }

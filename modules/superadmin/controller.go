@@ -1,17 +1,45 @@
 package superadmin
 
-import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+import (
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+)
 
-type ControllerRegisterApprovalInterface interface {
+type ControllerSuperadminInterface interface {
+	CreateCustomer(req CustomerParam) (interface{}, error)
 	ApprovedAdminRegister(id uint) (interface{}, error)
 	RejectedAdminRegister(id uint) (interface{}, error)
 }
 
-type ControllerRegisterApproval struct {
+type ControllerSuperadmin struct {
 	uc UsecaseSuperadminInterface
 }
 
-func (ctrl ControllerRegisterApproval) ApprovedAdminRegister(id uint) (interface{}, error) {
+// CreateCustomer Superadmin
+func (ctrl ControllerSuperadmin) CreateCustomer(req CustomerParam) (interface{}, error) {
+	customer, err := ctrl.uc.CreateCustomer(req)
+	if err != nil {
+		return SuccessCreate{}, err
+	}
+
+	response := SuccessCreate{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Create Customer",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: CustomerParam{
+			FirstName: customer.FirstName,
+			LastName:  customer.LastName,
+			Email:     customer.Email,
+			Avatar:    customer.Avatar,
+		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerSuperadmin) ApprovedAdminRegister(id uint) (interface{}, error) {
 	err := ctrl.uc.ApprovedAdminRegister(id)
 	if err != nil {
 		return SuccessUpdateRegisterAdmin{}, err
@@ -29,7 +57,7 @@ func (ctrl ControllerRegisterApproval) ApprovedAdminRegister(id uint) (interface
 	return response, nil
 }
 
-func (ctrl ControllerRegisterApproval) RejectedAdminRegister(id uint) (interface{}, error) {
+func (ctrl ControllerSuperadmin) RejectedAdminRegister(id uint) (interface{}, error) {
 	err := ctrl.uc.RejectedAdminRegister(id)
 	if err != nil {
 		return SuccessUpdateRegisterAdmin{}, err

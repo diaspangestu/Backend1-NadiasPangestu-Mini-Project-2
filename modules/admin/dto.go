@@ -7,7 +7,19 @@ type AdminParam struct {
 	Password string `json:"password"`
 }
 
-type SuccessCreate struct {
+type CustomerParam struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Avatar    string `json:"avatar"`
+}
+
+type SuccessCreateAdmin struct {
 	dto.Response
 	Data AdminParam `json:"data"`
+}
+
+type SuccessCreateCustomer struct {
+	dto.Response
+	Data CustomerParam `json:"data"`
 }
