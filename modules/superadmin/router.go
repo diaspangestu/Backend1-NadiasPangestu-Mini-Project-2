@@ -20,6 +20,7 @@ func (r RouterSuperadmin) Handle(router *gin.Engine) {
 	superadmin.POST("/login", r.SuperadminRequestHandler.LoginSuperadmin)
 
 	// About Customer
+	superadmin.GET("/customers", r.SuperadminRequestHandler.GetAllCustomers)
 	superadmin.POST("/create-customer", r.SuperadminRequestHandler.CreateCustomer)
 	superadmin.DELETE("/delete-customer/:id", r.SuperadminRequestHandler.DeleteCustomerById)
 

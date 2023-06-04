@@ -8,6 +8,7 @@ type ControllerSuperadminInterface interface {
 	LoginSuperadmin(username, password string) (interface{}, error)
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	DeleteCustomerById(id uint) error
+	GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error)
 	ApprovedAdminRegister(id uint) (interface{}, error)
 	RejectedAdminRegister(id uint) (interface{}, error)
 	UpdateActivedAdmin(id uint) (interface{}, error)
@@ -71,6 +72,26 @@ func (ctrl ControllerSuperadmin) DeleteCustomerById(id uint) error {
 	}
 
 	return nil
+}
+
+// GetAllCustomers Superadmin
+func (ctrl ControllerSuperadmin) GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error) {
+	request, err := ctrl.uc.GetAllCustomers(first_name, last_name, email, page, pageSize)
+	if err != nil {
+		return SuccessGetAllCustomers{}, err
+	}
+
+	response := SuccessGetAllCustomers{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Get All Customer Data",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: request,
+	}
+
+	return response, nil
 }
 
 func (ctrl ControllerSuperadmin) ApprovedAdminRegister(id uint) (interface{}, error) {

@@ -11,6 +11,7 @@ type AdminRepositoryInterface interface {
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	GetCustomerById(id uint) (*entities.Customer, error)
 	DeleteCustomerById(id uint, customer *entities.Customer) error
+	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
 }
 
 type Admin struct {
@@ -77,3 +78,25 @@ func (repo Admin) DeleteCustomerById(id uint, customer *entities.Customer) error
 }
 
 // TODO: admin can get all customer data with parameter (search by name and email) and pagination
+func (repo Admin) GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error) {
+	var customers []*entities.Customer
+
+	query := repo.db.Model(&entities.Customer{})
+	if first_name != "" {
+		query = query.Where("first_name LIKE ?", "%"+first_name+"%")
+	} else if last_name != "" {
+		query = query.Where("last_name LIKE ?", "%"+last_name+"%")
+	} else if email != "" {
+		query = query.Where("email LIKE ?", "%"+email+"%")
+	}
+
+	// Pagination
+	offset := (page - 1) * pageSize
+
+	err := query.Offset(offset).Limit(pageSize).Find(&customers).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return customers, nil
+}
