@@ -10,6 +10,8 @@ type ControllerSuperadminInterface interface {
 	DeleteCustomerById(id uint) error
 	ApprovedAdminRegister(id uint) (interface{}, error)
 	RejectedAdminRegister(id uint) (interface{}, error)
+	UpdateActivedAdmin(id uint) (interface{}, error)
+	UpdateDeadactivedAdmin(id uint) (interface{}, error)
 	GetApprovalRequest() (interface{}, error)
 }
 
@@ -100,6 +102,42 @@ func (ctrl ControllerSuperadmin) RejectedAdminRegister(id uint) (interface{}, er
 			Success:      true,
 			MessageTitle: "Rejected Registration Admin",
 			Message:      "Rejected",
+			ResponseTime: "",
+		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerSuperadmin) UpdateActivedAdmin(id uint) (interface{}, error) {
+	err := ctrl.uc.UpdateActivedAdmin(id)
+	if err != nil {
+		return SuccessUpdateRegisterAdmin{}, err
+	}
+
+	response := SuccessUpdateRegisterAdmin{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Admin is Actived Now",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerSuperadmin) UpdateDeadactivedAdmin(id uint) (interface{}, error) {
+	err := ctrl.uc.UpdateDeadactivedAdmin(id)
+	if err != nil {
+		return SuccessUpdateRegisterAdmin{}, err
+	}
+
+	response := SuccessUpdateRegisterAdmin{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Admin is Deadactived Now",
+			Message:      "Success",
 			ResponseTime: "",
 		},
 	}
