@@ -7,6 +7,7 @@ import (
 type ControllerSuperadminInterface interface {
 	LoginSuperadmin(username, password string) (interface{}, error)
 	CreateCustomer(req CustomerParam) (interface{}, error)
+	DeleteCustomerById(id uint) error
 	ApprovedAdminRegister(id uint) (interface{}, error)
 	RejectedAdminRegister(id uint) (interface{}, error)
 	GetApprovalRequest() (interface{}, error)
@@ -58,6 +59,16 @@ func (ctrl ControllerSuperadmin) CreateCustomer(req CustomerParam) (interface{},
 	}
 
 	return response, nil
+}
+
+// DeleteCustomerById Superadmin
+func (ctrl ControllerSuperadmin) DeleteCustomerById(id uint) error {
+	err := ctrl.uc.DeleteCustomerById(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (ctrl ControllerSuperadmin) ApprovedAdminRegister(id uint) (interface{}, error) {

@@ -4,8 +4,9 @@ import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
 
 type ControllerAdminInterface interface {
 	LoginAdmin(username, password string) (interface{}, error)
-	CreateCustomer(req CustomerParam) (interface{}, error)
 	RegisterAdmin(req AdminParam) (interface{}, error)
+	CreateCustomer(req CustomerParam) (interface{}, error)
+	DeleteCustomerById(id uint) error
 }
 
 type ControllerAdmin struct {
@@ -26,6 +27,28 @@ func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, 
 			ResponseTime: "",
 		},
 		Username: admin.Username,
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerAdmin) RegisterAdmin(req AdminParam) (interface{}, error) {
+	admin, err := ctrl.uc.RegisterAdmin(req)
+	if err != nil {
+		return SuccessCreateAdmin{}, err
+	}
+
+	response := SuccessCreateAdmin{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Register Admin",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: AdminParam{
+			Username: admin.Username,
+			Password: admin.Password,
+		},
 	}
 
 	return response, nil
@@ -56,24 +79,12 @@ func (ctrl ControllerAdmin) CreateCustomer(req CustomerParam) (interface{}, erro
 	return response, nil
 }
 
-func (ctrl ControllerAdmin) RegisterAdmin(req AdminParam) (interface{}, error) {
-	admin, err := ctrl.uc.RegisterAdmin(req)
+// DeleteCustomerById Admin
+func (ctrl ControllerAdmin) DeleteCustomerById(id uint) error {
+	err := ctrl.uc.DeleteCustomerById(id)
 	if err != nil {
-		return SuccessCreateAdmin{}, err
+		return err
 	}
 
-	response := SuccessCreateAdmin{
-		Response: dto.Response{
-			Success:      true,
-			MessageTitle: "Success Register Admin",
-			Message:      "Success",
-			ResponseTime: "",
-		},
-		Data: AdminParam{
-			Username: admin.Username,
-			Password: admin.Password,
-		},
-	}
-
-	return response, nil
+	return nil
 }

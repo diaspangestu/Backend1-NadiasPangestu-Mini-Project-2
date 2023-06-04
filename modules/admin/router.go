@@ -18,6 +18,9 @@ func (r RouterAdmin) Handle(router *gin.Engine) {
 
 	admin := router.Group(basePath)
 	admin.POST("/login", r.AdminRequestHandler.LoginSuperadmin)
-	admin.POST("/create-customer", r.AdminRequestHandler.CreateCustomer)
 	admin.POST("/register-admin", r.AdminRequestHandler.RegisterAdmin)
+
+	// About Customer
+	admin.POST("/create-customer", r.AdminRequestHandler.CreateCustomer)
+	admin.DELETE("/delete-customer/:id", r.AdminRequestHandler.DeleteCustomerById)
 }
