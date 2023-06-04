@@ -13,6 +13,8 @@ type UsecaseSuperadminInterface interface {
 	DeleteCustomerById(id uint) error
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
+	UpdateActivedAdmin(id uint) error
+	UpdateDeadactivedAdmin(id uint) error
 	GetApprovalRequest() ([]*entities.Actor, error)
 }
 
@@ -77,6 +79,24 @@ func (uc UsecaseSuperadmin) ApprovedAdminRegister(id uint) error {
 
 func (uc UsecaseSuperadmin) RejectedAdminRegister(id uint) error {
 	err := uc.superadminRepo.RejectedAdminRegister(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (uc UsecaseSuperadmin) UpdateActivedAdmin(id uint) error {
+	err := uc.superadminRepo.UpdateActivedAdmin(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (uc UsecaseSuperadmin) UpdateDeadactivedAdmin(id uint) error {
+	err := uc.superadminRepo.UpdateDeadactivedAdmin(id)
 	if err != nil {
 		return err
 	}

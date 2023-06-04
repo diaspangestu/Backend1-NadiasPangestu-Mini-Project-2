@@ -111,6 +111,40 @@ func (rh RequestHandlerSuperadmin) RejectedAdminRegister(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (rh RequestHandlerSuperadmin) UpdateActivedAdmin(c *gin.Context) {
+	id := c.Param("id")
+
+	// Parse id to uint
+	activeID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	response, err := rh.ctrl.UpdateActivedAdmin(uint(activeID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (rh RequestHandlerSuperadmin) UpdateDeadactivedAdmin(c *gin.Context) {
+	id := c.Param("id")
+
+	// Parse id to uint
+	activeID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	response, err := rh.ctrl.UpdateDeadactivedAdmin(uint(activeID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
 func (rh RequestHandlerSuperadmin) GetApprovalRequest(c *gin.Context) {
 	response, err := rh.ctrl.GetApprovalRequest()
 	if err != nil {

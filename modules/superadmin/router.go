@@ -26,5 +26,7 @@ func (r RouterSuperadmin) Handle(router *gin.Engine) {
 	// About Approval Request
 	superadmin.POST("/:id/approved", r.SuperadminRequestHandler.ApprovedAdminRegister)
 	superadmin.POST("/:id/rejected", r.SuperadminRequestHandler.RejectedAdminRegister)
+	superadmin.POST("/:id/actived", r.SuperadminRequestHandler.UpdateActivedAdmin)
+	superadmin.POST("/:id/deadactived", r.SuperadminRequestHandler.UpdateDeadactivedAdmin)
 	superadmin.GET("/approval-request", r.SuperadminRequestHandler.GetApprovalRequest)
 }

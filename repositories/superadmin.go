@@ -12,6 +12,8 @@ type SuperAdminRepository interface {
 	DeleteCustomerById(id uint, customer *entities.Customer) error
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
+	UpdateActivedAdmin(id uint) error
+	UpdateDeadactivedAdmin(id uint) error
 	GetApprovalRequest() ([]*entities.Actor, error)
 }
 
@@ -75,8 +77,8 @@ func (repo Superadmin) ApprovedAdminRegister(id uint) error {
 		return err
 	}
 
-	// Update Verified and Actived
-	err = repo.db.Model(&entities.Actor{}).Where("id = ?", id).Update("is_verified", false).Error
+	// Update Verified
+	err = repo.db.Model(&entities.Actor{}).Where("id = ?", id).Update("is_verified", true).Error
 	if err != nil {
 		return err
 	}
@@ -89,6 +91,48 @@ func (repo Superadmin) RejectedAdminRegister(id uint) error {
 	err := repo.db.Where("id = ?", id).First(&entities.Actor{}).Error
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (repo Superadmin) UpdateActivedAdmin(id uint) error {
+	// Check admin data by id
+	err := repo.db.Where("id = ?", id).First(&entities.Actor{}).Error
+	if err != nil {
+		return err
+	}
+
+	admin := &entities.Actor{}
+
+	// Update Actived
+	if admin.IsActived != "true" {
+		err = repo.db.Model(&entities.Actor{}).Where("id = ?", id).Update("is_actived", "true").Error
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	return nil
+}
+
+func (repo Superadmin) UpdateDeadactivedAdmin(id uint) error {
+	// Check admin data by id
+	err := repo.db.Where("id = ?", id).First(&entities.Actor{}).Error
+	if err != nil {
+		return err
+	}
+
+	admin := &entities.Actor{}
+
+	// Update Actived
+	if admin.IsActived != "false" {
+		err = repo.db.Model(&entities.Actor{}).Where("id = ?", id).Update("is_actived", "false").Error
+		if err != nil {
+			return err
+		}
+		return nil
 	}
 
 	return nil
