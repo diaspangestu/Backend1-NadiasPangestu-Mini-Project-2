@@ -17,6 +17,7 @@ type UsecaseSuperadminInterface interface {
 	UpdateActivedAdmin(id uint) error
 	UpdateDeadactivedAdmin(id uint) error
 	GetApprovalRequest() ([]*entities.Actor, error)
+	GetAllAdmins(username string, page, pageSize int) ([]*entities.Actor, error)
 }
 
 type UsecaseSuperadmin struct {
@@ -121,4 +122,13 @@ func (uc UsecaseSuperadmin) GetApprovalRequest() ([]*entities.Actor, error) {
 	}
 
 	return request, nil
+}
+
+func (uc UsecaseSuperadmin) GetAllAdmins(username string, page, pageSize int) ([]*entities.Actor, error) {
+	admins, err := uc.superadminRepo.GetAllAdmins(username, page, pageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	return admins, nil
 }

@@ -179,3 +179,25 @@ func (rh RequestHandlerSuperadmin) GetApprovalRequest(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (rh RequestHandlerSuperadmin) GetAllAdmins(c *gin.Context) {
+	username := c.Query("username")
+
+	// Parse pagination
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
+	}
+
+	pageSize, err := strconv.Atoi(c.Query("page_size"))
+	if err != nil {
+		pageSize = 10
+	}
+
+	res, err := rh.ctrl.GetAllAdmins(username, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
