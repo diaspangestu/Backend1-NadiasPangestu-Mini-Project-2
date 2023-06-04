@@ -73,3 +73,14 @@ func (rh RequestHandlerSuperadmin) RejectedAdminRegister(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func (rh RequestHandlerSuperadmin) GetApprovalRequest(c *gin.Context) {
+	response, err := rh.ctrl.GetApprovalRequest()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+	}
+
+	c.JSON(http.StatusOK, response)
+}

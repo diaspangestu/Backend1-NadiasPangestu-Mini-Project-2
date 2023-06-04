@@ -1,6 +1,8 @@
 package superadmin
 
-import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+import (
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+)
 
 type CustomerParam struct {
 	FirstName string `json:"first_name"`
@@ -20,4 +22,5 @@ type SuccessUpdateRegisterAdmin struct {
 
 type SuccessGetApprovalRequest struct {
 	dto.Response
+	Data interface{} `json:"data"`
 }

@@ -10,6 +10,7 @@ type UsecaseSuperadminInterface interface {
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
+	GetApprovalRequest() ([]*entities.Actor, error)
 }
 
 type UsecaseSuperadmin struct {
@@ -53,4 +54,13 @@ func (uc UsecaseSuperadmin) RejectedAdminRegister(id uint) error {
 	}
 
 	return nil
+}
+
+func (uc UsecaseSuperadmin) GetApprovalRequest() ([]*entities.Actor, error) {
+	request, err := uc.superadminRepo.GetApprovalRequest()
+	if err != nil {
+		return nil, err
+	}
+
+	return request, nil
 }
