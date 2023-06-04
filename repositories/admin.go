@@ -75,3 +75,5 @@ func (repo Admin) DeleteCustomerById(id uint, customer *entities.Customer) error
 
 	return nil
 }
+
+// TODO: admin can get all customer data with parameter (search by name and email) and pagination

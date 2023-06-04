@@ -70,6 +70,8 @@ func (repo Superadmin) DeleteCustomerById(id uint, customer *entities.Customer) 
 	return nil
 }
 
+// TODO: superadmin can get all customer data with parameter (search by name and email) and pagination
+
 func (repo Superadmin) ApprovedAdminRegister(id uint) error {
 	// Check admin data by id
 	err := repo.db.Where("id = ?", id).First(&entities.Actor{}).Error
