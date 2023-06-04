@@ -77,6 +77,30 @@ func (rh RequestHandlerSuperadmin) DeleteCustomerById(c *gin.Context) {
 	})
 }
 
+func (rh RequestHandlerSuperadmin) GetAllCustomers(c *gin.Context) {
+	first_name := c.Query("first_name")
+	last_name := c.Query("last_name")
+	email := c.Query("email")
+
+	// Parse pagination
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		page = 1
+	}
+
+	pageSize, err := strconv.Atoi(c.Query("page_size"))
+	if err != nil {
+		pageSize = 10
+	}
+
+	res, err := rh.ctrl.GetAllCustomers(first_name, last_name, email, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
 func (rh RequestHandlerSuperadmin) ApprovedAdminRegister(c *gin.Context) {
 	id := c.Param("id")
 

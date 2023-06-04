@@ -7,6 +7,7 @@ type ControllerAdminInterface interface {
 	RegisterAdmin(req AdminParam) (interface{}, error)
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	DeleteCustomerById(id uint) error
+	GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error)
 }
 
 type ControllerAdmin struct {
@@ -87,4 +88,23 @@ func (ctrl ControllerAdmin) DeleteCustomerById(id uint) error {
 	}
 
 	return nil
+}
+
+func (ctrl ControllerAdmin) GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error) {
+	request, err := ctrl.uc.GetAllCustomers(first_name, last_name, email, page, pageSize)
+	if err != nil {
+		return SuccessGetAllCustomers{}, err
+	}
+
+	response := SuccessGetAllCustomers{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Get All Customer Data",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: request,
+	}
+
+	return response, nil
 }

@@ -12,6 +12,7 @@ type UsecaseAdminInterface interface {
 	RegisterAdmin(admin AdminParam) (entities.Actor, error)
 	DeleteCustomerById(id uint) error
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
+	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
 }
 
 type UsecaseAdmin struct {
@@ -83,4 +84,13 @@ func (uc UsecaseAdmin) DeleteCustomerById(id uint) error {
 	}
 
 	return uc.adminRepo.DeleteCustomerById(id, existingData)
+}
+
+func (uc UsecaseAdmin) GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error) {
+	customers, err := uc.adminRepo.GetAllCustomers(first_name, last_name, email, page, pageSize)
+	if err != nil {
+		return nil, err
+	}
+
+	return customers, nil
 }

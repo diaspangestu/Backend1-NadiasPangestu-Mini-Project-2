@@ -28,3 +28,8 @@ type SuccessLoginAdmin struct {
 	dto.Response
 	Username string `json:"username"`
 }
+
+type SuccessGetAllCustomers struct {
+	dto.Response
+	Data interface{} `json:"data"`
+}
