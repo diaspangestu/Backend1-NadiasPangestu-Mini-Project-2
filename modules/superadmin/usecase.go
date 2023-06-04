@@ -1,12 +1,14 @@
 package superadmin
 
 import (
+	"errors"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/repositories"
 	"time"
 )
 
 type UsecaseSuperadminInterface interface {
+	LoginSuperadmin(username, password string) (*entities.Actor, error)
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
@@ -15,6 +17,20 @@ type UsecaseSuperadminInterface interface {
 
 type UsecaseSuperadmin struct {
 	superadminRepo repositories.Superadmin
+}
+
+func (uc UsecaseSuperadmin) LoginSuperadmin(username, password string) (*entities.Actor, error) {
+	superAdmin, err := uc.superadminRepo.LoginSuperadmin(username)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check password
+	if superAdmin.Password != password {
+		return nil, errors.New("wrong password")
+	}
+
+	return superAdmin, nil
 }
 
 // CreateCustomer Superadmin

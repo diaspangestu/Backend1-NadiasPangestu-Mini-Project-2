@@ -17,6 +17,7 @@ func (r RouterAdmin) Handle(router *gin.Engine) {
 	basePath := "/admin"
 
 	admin := router.Group(basePath)
+	admin.POST("/login", r.AdminRequestHandler.LoginSuperadmin)
 	admin.POST("/create-customer", r.AdminRequestHandler.CreateCustomer)
 	admin.POST("/register-admin", r.AdminRequestHandler.RegisterAdmin)
 }

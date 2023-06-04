@@ -6,6 +6,7 @@ import (
 )
 
 type AdminRepositoryInterface interface {
+	LoginAdmin(username string) (*entities.Actor, error)
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	RegisterAdmin(admin *entities.Actor) (*entities.Actor, error)
 }
@@ -18,6 +19,18 @@ func NewAdmin(db *gorm.DB) Admin {
 	return Admin{
 		db: db,
 	}
+}
+
+func (repo Admin) LoginAdmin(username string) (*entities.Actor, error) {
+	admin := &entities.Actor{}
+
+	err := repo.db.Model(&entities.Actor{}).
+		Where("username = ? AND is_verified = ?", username, "true").First(admin).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return admin, nil
 }
 
 // CreateCustomer Admin

@@ -22,6 +22,22 @@ func NewAdminRequestHandler(db *gorm.DB) RequestHandlerAdmin {
 	}
 }
 
+func (rh RequestHandlerAdmin) LoginSuperadmin(c *gin.Context) {
+	request := AdminParam{}
+
+	err := c.Bind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	res, err := rh.ctrl.LoginAdmin(request.Username, request.Password)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
 // CreateCustomer Admin
 func (rh RequestHandlerAdmin) CreateCustomer(c *gin.Context) {
 	request := CustomerParam{}

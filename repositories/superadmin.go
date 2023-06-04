@@ -6,6 +6,7 @@ import (
 )
 
 type SuperAdminRepository interface {
+	LoginSuperadmin(username string) (*entities.Actor, error)
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
@@ -20,6 +21,17 @@ func NewSuperadmin(db *gorm.DB) Superadmin {
 	return Superadmin{
 		db: db,
 	}
+}
+
+func (repo Superadmin) LoginSuperadmin(username string) (*entities.Actor, error) {
+	superAdmin := &entities.Actor{}
+
+	err := repo.db.Model(&entities.Actor{}).Where("username = ?", username).First(superAdmin).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return superAdmin, nil
 }
 
 // CreateCustomer Superadmin can create customer data
