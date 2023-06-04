@@ -37,3 +37,8 @@ type SuccessGetAllCustomers struct {
 	dto.Response
 	Data interface{} `json:"data"`
 }
+
+type SuccessGetAllAdmins struct {
+	dto.Response
+	Data interface{} `json:"data"`
+}

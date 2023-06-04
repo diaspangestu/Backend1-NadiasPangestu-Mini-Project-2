@@ -14,6 +14,7 @@ type ControllerSuperadminInterface interface {
 	UpdateActivedAdmin(id uint) (interface{}, error)
 	UpdateDeadactivedAdmin(id uint) (interface{}, error)
 	GetApprovalRequest() (interface{}, error)
+	GetAllAdmins(username string, page, pageSize int) (interface{}, error)
 }
 
 type ControllerSuperadmin struct {
@@ -176,6 +177,25 @@ func (ctrl ControllerSuperadmin) GetApprovalRequest() (interface{}, error) {
 		Response: dto.Response{
 			Success:      true,
 			MessageTitle: "Get All Data Approval Request",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: request,
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerSuperadmin) GetAllAdmins(username string, page, pageSize int) (interface{}, error) {
+	request, err := ctrl.uc.GetAllAdmins(username, page, pageSize)
+	if err != nil {
+		return SuccessGetAllAdmins{}, err
+	}
+
+	response := SuccessGetAllAdmins{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Get All Admin Data",
 			Message:      "Success",
 			ResponseTime: "",
 		},

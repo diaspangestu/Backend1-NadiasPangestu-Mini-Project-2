@@ -16,6 +16,7 @@ type SuperAdminRepository interface {
 	UpdateActivedAdmin(id uint) error
 	UpdateDeadactivedAdmin(id uint) error
 	GetApprovalRequest() ([]*entities.Actor, error)
+	GetAllAdmins(username string, page, pageSize int) ([]*entities.Actor, error)
 }
 
 type Superadmin struct {
@@ -71,6 +72,7 @@ func (repo Superadmin) DeleteCustomerById(id uint, customer *entities.Customer) 
 	return nil
 }
 
+// GetAllCustomers Superadmin
 func (repo Superadmin) GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error) {
 	var customers []*entities.Customer
 
@@ -174,4 +176,25 @@ func (repo Superadmin) GetApprovalRequest() ([]*entities.Actor, error) {
 	}
 
 	return result, nil
+}
+
+func (repo Superadmin) GetAllAdmins(username string, page, pageSize int) ([]*entities.Actor, error) {
+	var admins []*entities.Actor
+
+	query := repo.db.Model(&entities.Actor{})
+	if username != "" {
+		query = query.Where("username LIKE ?", "%"+username+"%")
+	}
+
+	query.Where("role_id = ? AND is_verified = ?", 2, "true")
+
+	// Pagination
+	offset := (page - 1) * pageSize
+
+	err := query.Offset(offset).Limit(pageSize).Find(&admins).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return admins, nil
 }
