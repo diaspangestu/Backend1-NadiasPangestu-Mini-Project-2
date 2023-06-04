@@ -8,6 +8,7 @@ type ControllerSuperadminInterface interface {
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	ApprovedAdminRegister(id uint) (interface{}, error)
 	RejectedAdminRegister(id uint) (interface{}, error)
+	GetApprovalRequest() (interface{}, error)
 }
 
 type ControllerSuperadmin struct {
@@ -70,6 +71,25 @@ func (ctrl ControllerSuperadmin) RejectedAdminRegister(id uint) (interface{}, er
 			Message:      "Rejected",
 			ResponseTime: "",
 		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerSuperadmin) GetApprovalRequest() (interface{}, error) {
+	request, err := ctrl.uc.GetApprovalRequest()
+	if err != nil {
+		return SuccessGetApprovalRequest{}, err
+	}
+
+	response := SuccessGetApprovalRequest{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Get All Data Approval Request",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: request,
 	}
 
 	return response, nil

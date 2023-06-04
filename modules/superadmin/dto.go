@@ -20,4 +20,5 @@ type SuccessUpdateRegisterAdmin struct {
 
 type SuccessGetApprovalRequest struct {
 	dto.Response
+	Data interface{} `json:"data"`
 }

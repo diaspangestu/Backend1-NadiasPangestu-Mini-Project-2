@@ -9,6 +9,7 @@ type SuperAdminRepository interface {
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
+	GetApprovalRequest() ([]*entities.Actor, error)
 }
 
 type Superadmin struct {
@@ -55,4 +56,18 @@ func (repo Superadmin) RejectedAdminRegister(id uint) error {
 	}
 
 	return nil
+}
+
+func (repo Superadmin) GetApprovalRequest() ([]*entities.Actor, error) {
+	var result []*entities.Actor
+
+	err := repo.db.Model(&entities.Actor{}).
+		Select("id, username, role_id, is_verified, created_at, updated_at").
+		Where("role_id = ? AND is_verified = ?", 2, "false").
+		Find(&result).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }

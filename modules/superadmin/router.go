@@ -20,4 +20,5 @@ func (r RouterSuperadmin) Handle(router *gin.Engine) {
 	superadmin.POST("/create-customer", r.SuperadminRequestHandler.CreateCustomer)
 	superadmin.POST("/:id/approved", r.SuperadminRequestHandler.ApprovedAdminRegister)
 	superadmin.POST("/:id/rejected", r.SuperadminRequestHandler.RejectedAdminRegister)
+	superadmin.GET("/approval-request", r.SuperadminRequestHandler.GetApprovalRequest)
 }
