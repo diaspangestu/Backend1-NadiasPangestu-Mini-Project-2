@@ -23,3 +23,8 @@ type SuccessCreateCustomer struct {
 	dto.Response
 	Data CustomerParam `json:"data"`
 }
+
+type SuccessLoginAdmin struct {
+	dto.Response
+	Username string `json:"username"`
+}

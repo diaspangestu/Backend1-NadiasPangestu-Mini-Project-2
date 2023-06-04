@@ -3,12 +3,32 @@ package admin
 import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
 
 type ControllerAdminInterface interface {
+	LoginAdmin(username, password string) (interface{}, error)
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	RegisterAdmin(req AdminParam) (interface{}, error)
 }
 
 type ControllerAdmin struct {
 	uc UsecaseAdmin
+}
+
+func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, error) {
+	admin, err := ctrl.uc.LoginAdmin(username, password)
+	if err != nil {
+		return nil, err
+	}
+
+	response := SuccessLoginAdmin{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Login Successfull",
+			Message:      "Sucess",
+			ResponseTime: "",
+		},
+		Username: admin.Username,
+	}
+
+	return response, nil
 }
 
 // CreateCustomer Admin

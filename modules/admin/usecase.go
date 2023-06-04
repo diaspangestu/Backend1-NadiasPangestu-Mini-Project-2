@@ -1,18 +1,34 @@
 package admin
 
 import (
+	"errors"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/repositories"
 	"time"
 )
 
 type UsecaseAdminInterface interface {
+	LoginAdmin(username, password string) (entities.Actor, error)
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	RegisterAdmin(admin AdminParam) (entities.Actor, error)
 }
 
 type UsecaseAdmin struct {
 	adminRepo repositories.Admin
+}
+
+func (uc UsecaseAdmin) LoginAdmin(username, password string) (*entities.Actor, error) {
+	admin, err := uc.adminRepo.LoginAdmin(username)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check password
+	if admin.Password != password {
+		return nil, errors.New("wrong password")
+	}
+
+	return admin, nil
 }
 
 // CreateCustomer Admin

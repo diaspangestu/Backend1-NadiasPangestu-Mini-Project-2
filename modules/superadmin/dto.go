@@ -9,6 +9,11 @@ type CustomerParam struct {
 	Avatar    string `json:"avatar"`
 }
 
+type LoginSuperadmin struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 type SuccessCreate struct {
 	dto.Response
 	Data CustomerParam `json:"data"`
@@ -21,4 +26,9 @@ type SuccessUpdateRegisterAdmin struct {
 type SuccessGetApprovalRequest struct {
 	dto.Response
 	Data interface{} `json:"data"`
+}
+
+type SuccessLoginSuperadmin struct {
+	dto.Response
+	Username string `json:"username"`
 }
