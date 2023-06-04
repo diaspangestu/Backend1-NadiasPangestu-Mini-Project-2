@@ -8,6 +8,8 @@ import (
 type SuperAdminRepository interface {
 	LoginSuperadmin(username string) (*entities.Actor, error)
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
+	GetCustomerById(id uint) (*entities.Customer, error)
+	DeleteCustomerById(id uint, customer *entities.Customer) error
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
 	GetApprovalRequest() ([]*entities.Actor, error)
@@ -42,6 +44,28 @@ func (repo Superadmin) CreateCustomer(customer *entities.Customer) (*entities.Cu
 	}
 
 	return customer, nil
+}
+
+// GetCustomerById Superadmin
+func (repo Superadmin) GetCustomerById(id uint) (*entities.Customer, error) {
+	customer := &entities.Customer{}
+
+	err := repo.db.Model(&entities.Customer{}).Where("id = ?", id).First(customer).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return customer, nil
+}
+
+// DeleteCustomerById Superadmin
+func (repo Superadmin) DeleteCustomerById(id uint, customer *entities.Customer) error {
+	err := repo.db.Model(&entities.Customer{}).Where("id = ?", id).Delete(customer).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (repo Superadmin) ApprovedAdminRegister(id uint) error {

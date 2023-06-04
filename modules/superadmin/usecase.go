@@ -10,6 +10,7 @@ import (
 type UsecaseSuperadminInterface interface {
 	LoginSuperadmin(username, password string) (*entities.Actor, error)
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
+	DeleteCustomerById(id uint) error
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
 	GetApprovalRequest() ([]*entities.Actor, error)
@@ -52,6 +53,17 @@ func (uc UsecaseSuperadmin) CreateCustomer(customer CustomerParam) (entities.Cus
 	}
 
 	return *newCustomer, nil
+}
+
+// DeleteCustomerById Superadmin
+func (uc UsecaseSuperadmin) DeleteCustomerById(id uint) error {
+	// Get Existing Customer Data
+	existingData, err := uc.superadminRepo.GetCustomerById(id)
+	if err != nil {
+		return err
+	}
+
+	return uc.superadminRepo.DeleteCustomerById(id, existingData)
 }
 
 func (uc UsecaseSuperadmin) ApprovedAdminRegister(id uint) error {

@@ -9,8 +9,9 @@ import (
 
 type UsecaseAdminInterface interface {
 	LoginAdmin(username, password string) (entities.Actor, error)
-	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	RegisterAdmin(admin AdminParam) (entities.Actor, error)
+	DeleteCustomerById(id uint) error
+	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 }
 
 type UsecaseAdmin struct {
@@ -29,6 +30,27 @@ func (uc UsecaseAdmin) LoginAdmin(username, password string) (*entities.Actor, e
 	}
 
 	return admin, nil
+}
+
+func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (entities.Actor, error) {
+	var newAdmin *entities.Actor
+
+	newAdmin = &entities.Actor{
+		Username:   admin.Username,
+		Password:   admin.Password,
+		RoleID:     2,
+		IsVerified: entities.False,
+		IsActived:  entities.False,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+
+	_, err := uc.adminRepo.RegisterAdmin(newAdmin)
+	if err != nil {
+		return *newAdmin, err
+	}
+
+	return *newAdmin, nil
 }
 
 // CreateCustomer Admin
@@ -52,23 +74,13 @@ func (uc UsecaseAdmin) CreateCustomer(customer CustomerParam) (entities.Customer
 	return *newCustomer, nil
 }
 
-func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (entities.Actor, error) {
-	var newAdmin *entities.Actor
-
-	newAdmin = &entities.Actor{
-		Username:   admin.Username,
-		Password:   admin.Password,
-		RoleID:     2,
-		IsVerified: entities.False,
-		IsActived:  entities.False,
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
-	}
-
-	_, err := uc.adminRepo.RegisterAdmin(newAdmin)
+// DeleteCustomerById Admin
+func (uc UsecaseAdmin) DeleteCustomerById(id uint) error {
+	// Get Existing Customer Data
+	existingData, err := uc.adminRepo.GetCustomerById(id)
 	if err != nil {
-		return *newAdmin, err
+		return err
 	}
 
-	return *newAdmin, nil
+	return uc.adminRepo.DeleteCustomerById(id, existingData)
 }

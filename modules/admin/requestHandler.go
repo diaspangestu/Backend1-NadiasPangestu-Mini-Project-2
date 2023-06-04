@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 )
 
 type RequestHandlerAdmin struct {
@@ -38,6 +39,22 @@ func (rh RequestHandlerAdmin) LoginSuperadmin(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+func (rh RequestHandlerAdmin) RegisterAdmin(c *gin.Context) {
+	request := AdminParam{}
+
+	err := c.Bind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	res, err := rh.ctrl.RegisterAdmin(request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
 // CreateCustomer Admin
 func (rh RequestHandlerAdmin) CreateCustomer(c *gin.Context) {
 	request := CustomerParam{}
@@ -55,18 +72,23 @@ func (rh RequestHandlerAdmin) CreateCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
-func (rh RequestHandlerAdmin) RegisterAdmin(c *gin.Context) {
-	request := AdminParam{}
+// DeleteCustomerById Admin
+func (rh RequestHandlerAdmin) DeleteCustomerById(c *gin.Context) {
+	id := c.Param("id")
 
-	err := c.Bind(&request)
+	// Parse id to uint
+	customerID, err := strconv.ParseUint(id, 10, 0)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
 	}
 
-	res, err := rh.ctrl.RegisterAdmin(request)
+	err = rh.ctrl.DeleteCustomerById(uint(customerID))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "Delete Customer Data Successfully",
+	})
 }
