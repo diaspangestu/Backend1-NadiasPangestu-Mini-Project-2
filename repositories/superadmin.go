@@ -6,6 +6,7 @@ import (
 )
 
 type SuperAdminRepository interface {
+	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	ApprovedAdminRegister(id uint) error
 	RejectedAdminRegister(id uint) error
 }
@@ -20,6 +21,16 @@ func NewSuperadmin(db *gorm.DB) Superadmin {
 	}
 }
 
+// CreateCustomer Superadmin can create customer data
+func (repo Superadmin) CreateCustomer(customer *entities.Customer) (*entities.Customer, error) {
+	err := repo.db.Model(&entities.Customer{}).Create(customer).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return customer, nil
+}
+
 func (repo Superadmin) ApprovedAdminRegister(id uint) error {
 	// Check admin data by id
 	err := repo.db.Where("id = ?", id).First(&entities.Actor{}).Error
@@ -28,10 +39,7 @@ func (repo Superadmin) ApprovedAdminRegister(id uint) error {
 	}
 
 	// Update Verified and Actived
-	err = repo.db.Model(&entities.Actor{}).Where("id = ?", id).Updates(map[string]interface{}{
-		"is_verified": true,
-		"is_actived":  true,
-	}).Error
+	err = repo.db.Model(&entities.Actor{}).Where("id = ?", id).Update("is_verified", false).Error
 	if err != nil {
 		return err
 	}

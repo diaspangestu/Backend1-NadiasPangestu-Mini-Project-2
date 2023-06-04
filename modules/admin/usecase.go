@@ -7,11 +7,33 @@ import (
 )
 
 type UsecaseAdminInterface interface {
+	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	RegisterAdmin(admin AdminParam) (entities.Actor, error)
 }
 
 type UsecaseAdmin struct {
 	adminRepo repositories.Admin
+}
+
+// CreateCustomer Admin
+func (uc UsecaseAdmin) CreateCustomer(customer CustomerParam) (entities.Customer, error) {
+	var newCustomer *entities.Customer
+
+	newCustomer = &entities.Customer{
+		FirstName: customer.FirstName,
+		LastName:  customer.LastName,
+		Email:     customer.Email,
+		Avatar:    customer.Avatar,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	_, err := uc.adminRepo.CreateCustomer(newCustomer)
+	if err != nil {
+		return *newCustomer, err
+	}
+
+	return *newCustomer, nil
 }
 
 func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (entities.Actor, error) {

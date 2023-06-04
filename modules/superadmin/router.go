@@ -14,9 +14,10 @@ func NewRouter(db *gorm.DB) RouterSuperadmin {
 }
 
 func (r RouterSuperadmin) Handle(router *gin.Engine) {
-	basePath := "/"
+	basePath := "/superadmin"
 
 	superadmin := router.Group(basePath)
-	superadmin.POST(":id/approved", r.SuperadminRequestHandler.ApprovedAdminRegister)
-	superadmin.POST(":id/rejected", r.SuperadminRequestHandler.RejectedAdminRegister)
+	superadmin.POST("/create-customer", r.SuperadminRequestHandler.CreateCustomer)
+	superadmin.POST("/:id/approved", r.SuperadminRequestHandler.ApprovedAdminRegister)
+	superadmin.POST("/:id/rejected", r.SuperadminRequestHandler.RejectedAdminRegister)
 }
