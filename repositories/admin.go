@@ -27,8 +27,7 @@ func NewAdmin(db *gorm.DB) Admin {
 func (repo Admin) LoginAdmin(username string) (*entities.Actor, error) {
 	admin := &entities.Actor{}
 
-	err := repo.db.Model(&entities.Actor{}).
-		Where("username = ? AND is_verified = ?", username, "true").First(admin).Error
+	err := repo.db.Model(&entities.Actor{}).Where("username = ? AND is_verified = ? AND is_actived = ?", username, "true", "true").First(admin).Error
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +76,6 @@ func (repo Admin) DeleteCustomerById(id uint, customer *entities.Customer) error
 	return nil
 }
 
-// TODO: admin can get all customer data with parameter (search by name and email) and pagination
 func (repo Admin) GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error) {
 	var customers []*entities.Customer
 
