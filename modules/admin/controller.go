@@ -23,7 +23,7 @@ func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, 
 	response := SuccessLoginAdmin{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Login Successfull",
+			MessageTitle: "Login Successful",
 			Message:      "Sucess",
 			ResponseTime: "",
 		},
@@ -34,7 +34,7 @@ func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, 
 }
 
 func (ctrl ControllerAdmin) RegisterAdmin(req AdminParam) (interface{}, error) {
-	admin, err := ctrl.uc.RegisterAdmin(req)
+	_, err := ctrl.uc.RegisterAdmin(req)
 	if err != nil {
 		return SuccessCreateAdmin{}, err
 	}
@@ -45,10 +45,6 @@ func (ctrl ControllerAdmin) RegisterAdmin(req AdminParam) (interface{}, error) {
 			MessageTitle: "Success Register Admin",
 			Message:      "Success",
 			ResponseTime: "",
-		},
-		Data: AdminParam{
-			Username: admin.Username,
-			Password: admin.Password,
 		},
 	}
 

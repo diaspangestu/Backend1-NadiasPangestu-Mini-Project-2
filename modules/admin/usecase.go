@@ -1,9 +1,9 @@
 package admin
 
 import (
-	"errors"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/repositories"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -25,20 +25,25 @@ func (uc UsecaseAdmin) LoginAdmin(username, password string) (*entities.Actor, e
 		return nil, err
 	}
 
-	// Check password
-	if admin.Password != password {
-		return nil, errors.New("wrong password")
+	// Verify hashed password
+	err = bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(password))
+	if err != nil {
+		return nil, err
 	}
 
 	return admin, nil
 }
 
-func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (entities.Actor, error) {
-	var newAdmin *entities.Actor
+func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (*entities.Actor, error) {
+	salt := 16
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(admin.Password), salt)
+	if err != nil {
+		return nil, err
+	}
 
-	newAdmin = &entities.Actor{
+	newAdmin := &entities.Actor{
 		Username:   admin.Username,
-		Password:   admin.Password,
+		Password:   string(hashedPassword),
 		RoleID:     2,
 		IsVerified: entities.False,
 		IsActived:  entities.False,
@@ -46,12 +51,12 @@ func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (entities.Actor, error) {
 		UpdatedAt:  time.Now(),
 	}
 
-	_, err := uc.adminRepo.RegisterAdmin(newAdmin)
+	createAdmin, err := uc.adminRepo.RegisterAdmin(newAdmin)
 	if err != nil {
-		return *newAdmin, err
+		return nil, err
 	}
 
-	return *newAdmin, nil
+	return createAdmin, nil
 }
 
 // CreateCustomer Admin

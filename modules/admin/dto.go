@@ -1,6 +1,8 @@
 package admin
 
-import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+import (
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
+)
 
 type AdminParam struct {
 	Username string `json:"username"`
@@ -16,7 +18,6 @@ type CustomerParam struct {
 
 type SuccessCreateAdmin struct {
 	dto.Response
-	Data AdminParam `json:"data"`
 }
 
 type SuccessCreateCustomer struct {
