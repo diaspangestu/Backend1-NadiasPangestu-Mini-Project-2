@@ -6,6 +6,7 @@ import (
 )
 
 type SuperAdminRepository interface {
+	CreateSuperadmin(superadmin *entities.Actor) (*entities.Actor, error)
 	LoginSuperadmin(username string) (*entities.Actor, error)
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	GetCustomerById(id uint) (*entities.Customer, error)
@@ -27,6 +28,15 @@ func NewSuperadmin(db *gorm.DB) Superadmin {
 	return Superadmin{
 		db: db,
 	}
+}
+
+func (repo Superadmin) CreateSuperadmin(superadmin *entities.Actor) (*entities.Actor, error) {
+	err := repo.db.Model(&entities.Actor{}).Create(superadmin).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return superadmin, nil
 }
 
 func (repo Superadmin) LoginSuperadmin(username string) (*entities.Actor, error) {

@@ -14,8 +14,8 @@ type ControllerAdmin struct {
 	uc UsecaseAdmin
 }
 
-func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, error) {
-	admin, err := ctrl.uc.LoginAdmin(username, password)
+func (ctrl ControllerAdmin) LoginAdmin(id uint, username, password string) (interface{}, error) {
+	admin, tokenString, err := ctrl.uc.LoginAdmin(id, username, password)
 	if err != nil {
 		return nil, err
 	}
@@ -28,6 +28,7 @@ func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, 
 			ResponseTime: "",
 		},
 		Username: admin.Username,
+		Token:    tokenString,
 	}
 
 	return response, nil

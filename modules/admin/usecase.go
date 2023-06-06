@@ -2,8 +2,8 @@ package admin
 
 import (
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/helpers"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/repositories"
-	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -11,7 +11,7 @@ type UsecaseAdminInterface interface {
 	LoginAdmin(username, password string) (entities.Actor, error)
 	RegisterAdmin(admin AdminParam) (entities.Actor, error)
 	DeleteCustomerById(id uint) error
-	CreateCustomer(customer CustomerParam) (entities.Customer, error)
+	CreateCustomer(customer CustomerParam) (entities.Customer, string, error)
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
 }
 
@@ -19,31 +19,33 @@ type UsecaseAdmin struct {
 	adminRepo repositories.Admin
 }
 
-func (uc UsecaseAdmin) LoginAdmin(username, password string) (*entities.Actor, error) {
+func (uc UsecaseAdmin) LoginAdmin(id uint, username, password string) (*entities.Actor, string, error) {
 	admin, err := uc.adminRepo.LoginAdmin(username)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	// Verify hashed password
-	err = bcrypt.CompareHashAndPassword([]byte(admin.Password), []byte(password))
-	if err != nil {
-		return nil, err
+	comparePass := helpers.ComparePass([]byte(admin.Password), []byte(password))
+	if !comparePass {
+		return nil, "", err
 	}
 
-	return admin, nil
+	// Generate token JWT
+	tokenString, err := helpers.GenerateToken(id, username)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return admin, tokenString, nil
 }
 
 func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (*entities.Actor, error) {
-	salt := 16
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(admin.Password), salt)
-	if err != nil {
-		return nil, err
-	}
+	hashPass := helpers.HashPass(admin.Password)
 
 	newAdmin := &entities.Actor{
 		Username:   admin.Username,
-		Password:   string(hashedPassword),
+		Password:   hashPass,
 		RoleID:     2,
 		IsVerified: entities.False,
 		IsActived:  entities.False,
