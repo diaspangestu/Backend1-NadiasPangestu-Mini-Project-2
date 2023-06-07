@@ -20,12 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-            go version
-            go get -u gorm.io/gorm
-            go get -u github.com/gin-gonic/gin
-            go get -u github.com/go-sql-driver/mysql
-            go get -u github.com/golang-jwt/jwt/v5
-          
+            go mod download
 
       - name: Build
         run: go build -v ./...
