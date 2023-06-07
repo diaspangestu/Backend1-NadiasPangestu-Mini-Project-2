@@ -92,7 +92,7 @@ go run main.go
 ```
 
 9. To use the API, please import this collection json to your Postman to test the API
--> [CLICK HERE TO DOWNLOAD COLLECTION]([link](https://galactic-robot-267801.postman.co/workspace/Bootcamp~018ddfa3-b124-42a3-969c-9c65f80dd548/collection/16357233-9d0b805d-0360-404a-a241-b0a90cb1d69e?action=share&creator=16357233)) <-
+-> [CLICK HERE TO DOWNLOAD COLLECTION](https://galactic-robot-267801.postman.co/workspace/Bootcamp~018ddfa3-b124-42a3-969c-9c65f80dd548/collection/16357233-9d0b805d-0360-404a-a241-b0a90cb1d69e?action=share&creator=16357233) <-
 
 ---
 
