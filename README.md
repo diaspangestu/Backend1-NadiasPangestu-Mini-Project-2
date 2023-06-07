@@ -85,31 +85,14 @@ find the api documentation at the following postmant [link](https://app.swaggerh
     INSERT INTO actors (id, username, password, role_id, is_verified, is_active)
     VALUES (1, 'superadmin', 'password123', 1, true, true);
    ```
-
-## Run
-
-Use this command to run API app from root directory:
-
+   
+8. Run this command to run API app from root directory:
 ```shell
-go run app/main.go
+go run main.go
 ```
 
-## Unit Tests
-
-### Generate Mocks
-
-To generate mock, run:
-
-```shell
-go generate ./...
-```
-
-### Run Unit Tests
-
-To run unit tests:
-```shell
-go test ./...
-```
+9. To use the API, please import this collection json to your Postman to test the API
+-> [CLICK HERE TO DOWNLOAD COLLECTION]([link](https://drive.google.com/file/d/1QUdkKN6SdeI_0CU_Dva1WR2_hahZdXwd/view?usp=sharing)) <-
 
 ---
 
@@ -119,9 +102,36 @@ This README would normally document whatever steps are necessary to get your app
 
 ### Feature Description ###
 there are three endpoint that could use for appointment proccess, which are:
-1. Create Appointment
-2. Approval Appointment
-3. Reschedule Appointment
+
+#### Superadmin ####
+1. Login
+2. Register customer data
+3. Delete customer data
+4. Read all customer data
+5. Read all customer data with parameter (name, email) and pagination
+6. Approve/Reject admin registration
+7. Active/Deadactive admin
+8. Read approval request from admin registration
+9. Delete admin data
+10. Read all admin data with parameter (username) and pagination
+
+#### Admin ####
+1. Login
+2. Register admin data
+3. Read admin data
+4. Update admin data
+5. Delete admin data
+6. Register customer data
+7. Delete customer data
+8. Read all customer data
+9. Read all admin data
+10. Fetch from external API
+
+#### Customer ####
+1. Create customer data
+2. Read customer data
+3. Update customer data
+4. Delete customer data
 
 ### Acceptance Criteria ###
 1. Make an appointment & book the schedule
