@@ -5,9 +5,6 @@ This readme still working on progress
 ## Previous Mini Project ##
 here is my previous mini project called "Backend SQL Definition", if you want to see the previous project, [CLICK HERE](https://github.com/diaspangestu/BRI-Bootcamp-Internship-Mini-Project1)
 
-## API Contract
-find the api documentation at the following postmant [link](https://app.swaggerhub.com/apis-docs/Lacutee/FitaTest/1.0.0)
-
 ## Setup
 1. Install Go version 1.20
 2. Use GoLand (recommended) or any IDE like Visual Studio Code
