@@ -21,7 +21,7 @@ func (r RouterAdmin) Handle(router *gin.Engine) {
 	admin.POST("/login", r.AdminRequestHandler.LoginAdmin)
 	admin.POST("/register-admin", r.AdminRequestHandler.RegisterAdmin)
 
-	// About Data
+	// About Customer
 	admin.Use(middleware.Authentication())
 	admin.POST("/create-customer", r.AdminRequestHandler.CreateCustomer)
 	admin.DELETE("/delete-customer/:id", r.AdminRequestHandler.DeleteCustomerById)

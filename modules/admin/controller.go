@@ -63,7 +63,7 @@ func (ctrl ControllerAdmin) CreateCustomer(req CustomerParam) (interface{}, erro
 	response := SuccessCreateCustomer{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Create Data",
+			MessageTitle: "Success Create Customer",
 			Message:      "Success",
 			ResponseTime: "",
 		},
@@ -97,7 +97,7 @@ func (ctrl ControllerAdmin) GetAllCustomers(first_name, last_name, email string,
 	response := SuccessGetAllCustomers{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Get All Data Data",
+			MessageTitle: "Success Get All Customer Data",
 			Message:      "Success",
 			ResponseTime: "",
 		},
@@ -116,7 +116,7 @@ func (ctrl ControllerAdmin) SaveCustomersFromAPI() (interface{}, error) {
 	response := SuccessFetchCustomersFromAPI{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Fetch Data Data from API",
+			MessageTitle: "Success Fetch Customer Data from API",
 			Message:      "Success",
 			ResponseTime: "",
 		},

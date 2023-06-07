@@ -70,7 +70,7 @@ func (ctrl ControllerSuperadmin) CreateCustomer(req CustomerParam) (interface{},
 	response := SuccessCreate{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Create Data",
+			MessageTitle: "Success Create Customer",
 			Message:      "Success",
 			ResponseTime: "",
 		},
@@ -105,7 +105,7 @@ func (ctrl ControllerSuperadmin) GetAllCustomers(first_name, last_name, email st
 	response := SuccessGetAllCustomers{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Get All Data Data",
+			MessageTitle: "Success Get All Customer Data",
 			Message:      "Success",
 			ResponseTime: "",
 		},

@@ -85,7 +85,7 @@ func (uc UsecaseAdmin) CreateCustomer(customer CustomerParam) (entities.Customer
 
 // DeleteCustomerById Admin
 func (uc UsecaseAdmin) DeleteCustomerById(id uint) error {
-	// Get Existing Data Data
+	// Get Existing Customer Data
 	existingData, err := uc.adminRepo.GetCustomerById(id)
 	if err != nil {
 		return err

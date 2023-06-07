@@ -21,7 +21,7 @@ func (r RouterSuperadmin) Handle(router *gin.Engine) {
 	superadmin.POST("/register", r.SuperadminRequestHandler.CreateSuperadmin)
 	superadmin.POST("/login", r.SuperadminRequestHandler.LoginSuperadmin)
 
-	// About Data
+	// About Customer
 	superadmin.Use(middleware.Authentication())
 	superadmin.GET("/customers", r.SuperadminRequestHandler.GetAllCustomers)
 	superadmin.POST("/create-customer", r.SuperadminRequestHandler.CreateCustomer)

@@ -46,7 +46,7 @@ func (uc UsecaseCustomer) GetCustomerById(id uint) (entities.Customer, error) {
 }
 
 func (uc UsecaseCustomer) UpdateCustomerById(id uint, customer CustomerParam) (entities.Customer, error) {
-	// Get Existing Data Data
+	// Get Existing Customer Data
 	existingCustomer, err := uc.customerRepo.GetCustomerById(id)
 	if err != nil {
 		return entities.Customer{}, err
@@ -58,7 +58,7 @@ func (uc UsecaseCustomer) UpdateCustomerById(id uint, customer CustomerParam) (e
 	existingCustomer.Avatar = customer.Avatar
 	existingCustomer.UpdatedAt = time.Now()
 
-	// Updated the Data Data
+	// Updated the Customer Data
 	updatedCustomer, err := uc.customerRepo.UpdateCustomerById(id, existingCustomer)
 	if err != nil {
 		return entities.Customer{}, err
@@ -68,7 +68,7 @@ func (uc UsecaseCustomer) UpdateCustomerById(id uint, customer CustomerParam) (e
 }
 
 func (uc UsecaseCustomer) DeleteCustomerById(id uint) error {
-	// Get existing Data Data
+	// Get existing Customer Data
 	existingData, err := uc.customerRepo.GetCustomerById(id)
 	if err != nil {
 		return err
