@@ -14,6 +14,16 @@ type LoginSuperadmin struct {
 	Password string `json:"password"`
 }
 
+type SuperAdminParam struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type SuccessCreateSuperadmin struct {
+	dto.Response
+}
+
 type SuccessCreate struct {
 	dto.Response
 	Data CustomerParam `json:"data"`
@@ -31,6 +41,7 @@ type SuccessGetApprovalRequest struct {
 type SuccessLoginSuperadmin struct {
 	dto.Response
 	Username string `json:"username"`
+	Token    string `json:"token"`
 }
 
 type SuccessGetAllCustomers struct {

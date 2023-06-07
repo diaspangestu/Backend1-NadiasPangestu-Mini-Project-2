@@ -8,14 +8,15 @@ type ControllerAdminInterface interface {
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	DeleteCustomerById(id uint) error
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error)
+	SaveCustomersFromAPI() (interface{}, error)
 }
 
 type ControllerAdmin struct {
 	uc UsecaseAdmin
 }
 
-func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, error) {
-	admin, err := ctrl.uc.LoginAdmin(username, password)
+func (ctrl ControllerAdmin) LoginAdmin(id uint, username, password string) (interface{}, error) {
+	admin, tokenString, err := ctrl.uc.LoginAdmin(id, username, password)
 	if err != nil {
 		return nil, err
 	}
@@ -28,6 +29,7 @@ func (ctrl ControllerAdmin) LoginAdmin(username, password string) (interface{}, 
 			ResponseTime: "",
 		},
 		Username: admin.Username,
+		Token:    tokenString,
 	}
 
 	return response, nil
@@ -100,6 +102,24 @@ func (ctrl ControllerAdmin) GetAllCustomers(first_name, last_name, email string,
 			ResponseTime: "",
 		},
 		Data: request,
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerAdmin) SaveCustomersFromAPI() (interface{}, error) {
+	err := ctrl.uc.SaveCustomersFromAPI()
+	if err != nil {
+		return SuccessFetchCustomersFromAPI{}, err
+	}
+
+	response := SuccessFetchCustomersFromAPI{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Fetch Customer Data from API",
+			Message:      "Success",
+			ResponseTime: "",
+		},
 	}
 
 	return response, nil

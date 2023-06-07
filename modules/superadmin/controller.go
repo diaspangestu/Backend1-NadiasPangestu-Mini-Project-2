@@ -5,7 +5,8 @@ import (
 )
 
 type ControllerSuperadminInterface interface {
-	LoginSuperadmin(username, password string) (interface{}, error)
+	CreateSuperadmin(req SuperAdminParam) (interface{}, error)
+	LoginSuperadmin(id uint, username, password string) (interface{}, error)
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	DeleteCustomerById(id uint) error
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error)
@@ -21,8 +22,26 @@ type ControllerSuperadmin struct {
 	uc UsecaseSuperadminInterface
 }
 
-func (ctrl ControllerSuperadmin) LoginSuperadmin(username, password string) (interface{}, error) {
-	superAdmin, err := ctrl.uc.LoginSuperadmin(username, password)
+func (ctrl ControllerSuperadmin) CreateSuperadmin(req SuperAdminParam) (interface{}, error) {
+	_, err := ctrl.uc.CreateSuperadmin(req)
+	if err != nil {
+		return SuccessCreateSuperadmin{}, err
+	}
+
+	response := SuccessCreateSuperadmin{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Create Superadmin",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerSuperadmin) LoginSuperadmin(id uint, username, password string) (interface{}, error) {
+	superAdmin, tokenString, err := ctrl.uc.LoginSuperadmin(id, username, password)
 	if err != nil {
 		return nil, err
 	}
@@ -35,6 +54,7 @@ func (ctrl ControllerSuperadmin) LoginSuperadmin(username, password string) (int
 			ResponseTime: "",
 		},
 		Username: superAdmin.Username,
+		Token:    tokenString,
 	}
 
 	return response, nil

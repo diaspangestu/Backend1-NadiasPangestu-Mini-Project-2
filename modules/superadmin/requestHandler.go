@@ -23,15 +23,31 @@ func NewSuperadminRequestHandler(db *gorm.DB) RequestHandlerSuperadmin {
 	}
 }
 
-func (rh RequestHandlerSuperadmin) LoginSuperadmin(c *gin.Context) {
-	request := LoginSuperadmin{}
+func (rh RequestHandlerSuperadmin) CreateSuperadmin(c *gin.Context) {
+	request := SuperAdminParam{}
 
 	err := c.Bind(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
 	}
 
-	res, err := rh.ctrl.LoginSuperadmin(request.Username, request.Password)
+	res, err := rh.ctrl.CreateSuperadmin(request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
+func (rh RequestHandlerSuperadmin) LoginSuperadmin(c *gin.Context) {
+	request := SuperAdminParam{}
+
+	err := c.Bind(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	res, err := rh.ctrl.LoginSuperadmin(request.ID, request.Username, request.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
 	}

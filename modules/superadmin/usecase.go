@@ -1,14 +1,15 @@
 package superadmin
 
 import (
-	"errors"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
+	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/helpers"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/repositories"
 	"time"
 )
 
 type UsecaseSuperadminInterface interface {
-	LoginSuperadmin(username, password string) (*entities.Actor, error)
+	CreateSuperadmin(superadmin SuperAdminParam) (*entities.Actor, error)
+	LoginSuperadmin(id uint, username, password string) (*entities.Actor, string, error)
 	CreateCustomer(customer CustomerParam) (entities.Customer, error)
 	DeleteCustomerById(id uint) error
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
@@ -24,18 +25,46 @@ type UsecaseSuperadmin struct {
 	superadminRepo repositories.Superadmin
 }
 
-func (uc UsecaseSuperadmin) LoginSuperadmin(username, password string) (*entities.Actor, error) {
-	superAdmin, err := uc.superadminRepo.LoginSuperadmin(username)
+func (uc UsecaseSuperadmin) CreateSuperadmin(superadmin SuperAdminParam) (*entities.Actor, error) {
+	hasPass := helpers.HashPass(superadmin.Password)
+
+	newSuperadmin := &entities.Actor{
+		Username:   superadmin.Username,
+		Password:   hasPass,
+		RoleID:     1,
+		IsVerified: entities.True,
+		IsActived:  entities.True,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+
+	createSuperadmin, err := uc.superadminRepo.CreateSuperadmin(newSuperadmin)
 	if err != nil {
 		return nil, err
 	}
 
-	// Check password
-	if superAdmin.Password != password {
-		return nil, errors.New("wrong password")
+	return createSuperadmin, nil
+}
+
+func (uc UsecaseSuperadmin) LoginSuperadmin(id uint, username, password string) (*entities.Actor, string, error) {
+	superAdmin, err := uc.superadminRepo.LoginSuperadmin(username)
+	if err != nil {
+		return nil, "", err
 	}
 
-	return superAdmin, nil
+	// Verify hashed password
+	comparePass := helpers.ComparePass([]byte(superAdmin.Password), []byte(password))
+	if !comparePass {
+		return nil, "", err
+	}
+
+	// Generate token JWT
+	tokenString, err := helpers.GenerateToken(id, username)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return superAdmin, tokenString, nil
 }
 
 // CreateCustomer Superadmin

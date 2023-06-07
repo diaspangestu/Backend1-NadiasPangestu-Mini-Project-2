@@ -23,7 +23,7 @@ func NewAdminRequestHandler(db *gorm.DB) RequestHandlerAdmin {
 	}
 }
 
-func (rh RequestHandlerAdmin) LoginSuperadmin(c *gin.Context) {
+func (rh RequestHandlerAdmin) LoginAdmin(c *gin.Context) {
 	request := AdminParam{}
 
 	err := c.Bind(&request)
@@ -31,7 +31,7 @@ func (rh RequestHandlerAdmin) LoginSuperadmin(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
 	}
 
-	res, err := rh.ctrl.LoginAdmin(request.Username, request.Password)
+	res, err := rh.ctrl.LoginAdmin(request.ID, request.Username, request.Password)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
 	}
@@ -110,6 +110,15 @@ func (rh RequestHandlerAdmin) GetAllCustomers(c *gin.Context) {
 	}
 
 	res, err := rh.ctrl.GetAllCustomers(first_name, last_name, email, page, pageSize)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
+
+func (rh RequestHandlerAdmin) SaveCustomersFromAPI(c *gin.Context) {
+	res, err := rh.ctrl.SaveCustomersFromAPI()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
 	}

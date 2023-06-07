@@ -5,6 +5,7 @@ import (
 )
 
 type AdminParam struct {
+	ID       uint   `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -28,9 +29,14 @@ type SuccessCreateCustomer struct {
 type SuccessLoginAdmin struct {
 	dto.Response
 	Username string `json:"username"`
+	Token    string `json:"token"`
 }
 
 type SuccessGetAllCustomers struct {
 	dto.Response
 	Data interface{} `json:"data"`
+}
+
+type SuccessFetchCustomersFromAPI struct {
+	dto.Response
 }
