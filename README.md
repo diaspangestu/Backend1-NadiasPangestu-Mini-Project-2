@@ -1,21 +1,16 @@
 # README #
 
+This readme still working on progress
+
 ## API Contract
 find the api documentation at the following postmant [link](https://app.swaggerhub.com/apis-docs/Lacutee/FitaTest/1.0.0)
-## Setup
 
-1. Install Go version 1.19
-2. Install Mockery version v2.20 or later
-3. Use GoLand (recommended)
+## Setup
+1. Install Go version 1.20
+2. Use GoLand (recommended) or any IDE like Visual Studio Code
 4. Download dependencies with command `go mod tidy and go vendor`
-4. Create `.env` file based on `.env.example`
-5. Run `docker-compose.dev.yml` to build the container [optional]
-6. At `.env` choose ENVIRONMENT between `docker` and `development`
-   1. `docker` is when developing on docker container app
-   2. `development` is when developing on local folder app
-7. If you want to use anther database driver instead of which has
-been provide by `docker-compose`. Please find the migration query
-which placed on `./utils/db/migration` [Optional]
+5. 
+
 ## Run
 
 Use this command to run API app from root directory:
