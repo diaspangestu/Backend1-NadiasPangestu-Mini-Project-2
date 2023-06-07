@@ -21,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
             go version
-            go get -u golang.org/x/lint/golint
             go get -u gorm.io/gorm
             go get -u github.com/gin-gonic/gin
             go get -u github.com/go-sql-driver/mysql
