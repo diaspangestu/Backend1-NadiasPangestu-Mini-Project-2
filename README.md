@@ -12,7 +12,79 @@ find the api documentation at the following postmant [link](https://app.swaggerh
 1. Install Go version 1.20
 2. Use GoLand (recommended) or any IDE like Visual Studio Code
 4. Download dependencies with command `go mod tidy and go vendor`
-5. 
+5. Run MySql server (recommended using xampp or mamp)
+6. Create database "bootcampbri_minpro1" or anything you want, you can setup the connection to database on db/gorm.go
+7. Create table for database
+    1. Table Actors
+    ```shell
+    CREATE TABLE actors (
+   id BIGINT UNSIGNED NOT NULL,
+   username VARCHAR(20) NOT NULL,
+   password VARCHAR(30) NOT NULL,
+   role_id INT UNSIGNED NOT NULL,
+   is_verified ENUM('true', 'false'),
+   is_active ENUM('true', 'false'),
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (id)
+   ) ENGINE = InnoDB;
+    ```
+   
+    2. Table Customers
+   ```shell
+    CREATE TABLE customer (
+    id BIGINT UNSIGNED NOT NULL,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(50),
+    avatar VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+    ) ENGINE = InnoDB;
+    ```
+   
+    3. Table Roles
+   ```shell
+    id INT UNSIGNED NOT NULL,
+    role_name VARCHAR(15),
+    PRIMARY KEY (id)
+    ) ENGINE = InnoDB;
+   ```
+   
+    4. Table Register Approval
+   ```shell
+    CREATE TABLE register_approval (
+    id BIGINT UNSIGNED NOT NULL,
+    admin_id BIGINT UNSIGNED NOT NULL,
+    super_admin_id BIGINT UNSIGNED NOT NULL,
+    status VARCHAR(25),
+    PRIMARY KEY (id)
+    ) ENGINE = InnoDB;
+    ```
+   
+    5. Alter Table Actors
+   ```shell
+    ALTER TABLE actors
+    ADD FOREIGN KEY (role_id) REFERENCES role(id);
+   ```
+   
+    6. Alter Table Register Approval
+   ```shell
+    ALTER TABLE register_approval
+    ADD FOREIGN KEY (admin_id) REFERENCES actors(id),
+    ADD FOREIGN KEY (super_admin_id) REFERENCES actors(id);
+   ```
+   
+    7. Insert Data Role and Actors (superadmin)
+   ```shell
+    INSERT INTO role (id, role_name)
+    VALUES (1, 'superadmin'),
+    (2, 'admin');
+    
+    INSERT INTO actors (id, username, password, role_id, is_verified, is_active)
+    VALUES (1, 'superadmin', 'password123', 1, true, true);
+   ```
 
 ## Run
 
