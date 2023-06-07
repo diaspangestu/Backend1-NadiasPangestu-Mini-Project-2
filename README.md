@@ -3,7 +3,7 @@
 This readme still working on progress
 
 # Endpoint for Postman
-[link](https://galactic-robot-267801.postman.co/workspace/Bootcamp~018ddfa3-b124-42a3-969c-9c65f80dd548/collection/16357233-9d0b805d-0360-404a-a241-b0a90cb1d69e?action=share&creator=16357233)
+[link](https://drive.google.com/file/d/1QUdkKN6SdeI_0CU_Dva1WR2_hahZdXwd/view?usp=sharing)
 
 ## API Contract
 find the api documentation at the following postmant [link](https://app.swaggerhub.com/apis-docs/Lacutee/FitaTest/1.0.0)
