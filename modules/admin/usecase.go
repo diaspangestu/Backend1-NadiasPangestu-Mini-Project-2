@@ -4,6 +4,7 @@ import (
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/helpers"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/repositories"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
@@ -36,7 +37,7 @@ func (uc UsecaseAdmin) LoginAdmin(id uint, username, password string) (*entities
 	tokenString, err := helpers.GenerateToken(id, username)
 	if err != nil {
 		return nil, "", err
-	}
+  }
 
 	return admin, tokenString, nil
 }
