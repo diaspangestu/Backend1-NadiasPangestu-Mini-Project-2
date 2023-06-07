@@ -8,8 +8,13 @@ import (
 )
 
 type UsecaseAdminInterface interface {
+	// admin
 	LoginAdmin(username, password string) (entities.Actor, error)
-	RegisterAdmin(admin AdminParam) (entities.Actor, error)
+	RegisterAdmin(admin LoginAdminParam) (entities.Actor, error)
+	GetAdminById(id uint) (entities.Actor, error)
+	UpdateCustomerById(id uint, admin AdminParam) (entities.Actor, error)
+	DeleteAdminById(id uint) error
+	// customer
 	DeleteCustomerById(id uint) error
 	CreateCustomer(customer CustomerParam) (entities.Customer, string, error)
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
@@ -41,7 +46,7 @@ func (uc UsecaseAdmin) LoginAdmin(id uint, username, password string) (*entities
 	return admin, tokenString, nil
 }
 
-func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (*entities.Actor, error) {
+func (uc UsecaseAdmin) RegisterAdmin(admin LoginAdminParam) (*entities.Actor, error) {
 	hashPass := helpers.HashPass(admin.Password)
 
 	newAdmin := &entities.Actor{
@@ -60,6 +65,47 @@ func (uc UsecaseAdmin) RegisterAdmin(admin AdminParam) (*entities.Actor, error) 
 	}
 
 	return createAdmin, nil
+}
+
+func (uc UsecaseAdmin) GetAdminById(id uint) (entities.Actor, error) {
+	admin, err := uc.adminRepo.GetAdminById(id)
+	if err != nil {
+		return entities.Actor{}, err
+	}
+
+	return *admin, nil
+}
+
+func (uc UsecaseAdmin) UpdateCustomerById(id uint, admin AdminParam) (entities.Actor, error) {
+	// Get Existing Admin Data
+	existingAdmin, err := uc.adminRepo.GetAdminById(id)
+	if err != nil {
+		return entities.Actor{}, err
+	}
+
+	existingAdmin.Username = admin.Username
+	existingAdmin.RoleID = admin.RoleID
+	existingAdmin.IsVerified = admin.IsVerified
+	existingAdmin.IsActived = admin.IsActived
+	existingAdmin.UpdatedAt = time.Now()
+
+	// Updated the Admin Data
+	updatedAdmin, err := uc.adminRepo.UpdateAdminById(id, existingAdmin)
+	if err != nil {
+		return entities.Actor{}, err
+	}
+
+	return *updatedAdmin, nil
+}
+
+func (uc UsecaseAdmin) DeleteAdminById(id uint) error {
+	// Get existing Admin Data
+	existingData, err := uc.adminRepo.GetAdminById(id)
+	if err != nil {
+		return err
+	}
+
+	return uc.adminRepo.DeleteAdminById(id, existingData)
 }
 
 // CreateCustomer Admin

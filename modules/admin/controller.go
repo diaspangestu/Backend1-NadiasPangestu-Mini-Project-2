@@ -3,8 +3,13 @@ package admin
 import "github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
 
 type ControllerAdminInterface interface {
+	// admin
 	LoginAdmin(username, password string) (interface{}, error)
-	RegisterAdmin(req AdminParam) (interface{}, error)
+	RegisterAdmin(req LoginAdminParam) (interface{}, error)
+	GetAdminById(id uint) (interface{}, error)
+	UpdateAdminById(id uint, admin AdminParam) (interface{}, error)
+	DeleteAdminById(id uint) error
+	// customer
 	CreateCustomer(req CustomerParam) (interface{}, error)
 	DeleteCustomerById(id uint) error
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) (interface{}, error)
@@ -35,7 +40,7 @@ func (ctrl ControllerAdmin) LoginAdmin(id uint, username, password string) (inte
 	return response, nil
 }
 
-func (ctrl ControllerAdmin) RegisterAdmin(req AdminParam) (interface{}, error) {
+func (ctrl ControllerAdmin) RegisterAdmin(req LoginAdminParam) (interface{}, error) {
 	_, err := ctrl.uc.RegisterAdmin(req)
 	if err != nil {
 		return SuccessCreateAdmin{}, err
@@ -51,6 +56,63 @@ func (ctrl ControllerAdmin) RegisterAdmin(req AdminParam) (interface{}, error) {
 	}
 
 	return response, nil
+}
+
+func (ctrl ControllerAdmin) GetAdminById(id uint) (interface{}, error) {
+	admin, err := ctrl.uc.GetAdminById(id)
+	if err != nil {
+		return dto.ErrorResponse{}, err
+	}
+
+	response := SuccessCreate{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Get Admin",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: AdminParam{
+			Username:   admin.Username,
+			RoleID:     admin.RoleID,
+			IsVerified: admin.IsVerified,
+			IsActived:  admin.IsActived,
+		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerAdmin) UpdateAdminById(id uint, admin AdminParam) (interface{}, error) {
+	updatedAdmin, err := ctrl.uc.UpdateCustomerById(id, admin)
+	if err != nil {
+		return dto.ErrorResponse{}, err
+	}
+
+	response := SuccessUpdate{
+		Response: dto.Response{
+			Success:      true,
+			MessageTitle: "Success Update Admin",
+			Message:      "Success",
+			ResponseTime: "",
+		},
+		Data: AdminParam{
+			Username:   updatedAdmin.Username,
+			RoleID:     updatedAdmin.RoleID,
+			IsVerified: updatedAdmin.IsVerified,
+			IsActived:  updatedAdmin.IsActived,
+		},
+	}
+
+	return response, nil
+}
+
+func (ctrl ControllerAdmin) DeleteAdminById(id uint) error {
+	err := ctrl.uc.DeleteAdminById(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // CreateCustomer Admin

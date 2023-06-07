@@ -20,6 +20,10 @@ func (r RouterAdmin) Handle(router *gin.Engine) {
 	admin := router.Group(basePath)
 	admin.POST("/login", r.AdminRequestHandler.LoginAdmin)
 	admin.POST("/register-admin", r.AdminRequestHandler.RegisterAdmin)
+	admin.Use(middleware.Authentication())
+	admin.GET("/:id", r.AdminRequestHandler.GetAdminById)
+	admin.PUT("/:id", r.AdminRequestHandler.UpdateAdminById)
+	admin.DELETE("/:id", r.AdminRequestHandler.DeleteAdminById)
 
 	// About Customer
 	admin.Use(middleware.Authentication())

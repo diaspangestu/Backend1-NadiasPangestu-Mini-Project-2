@@ -2,8 +2,8 @@
 
 This readme still working on progress
 
-# Endpoint for Postman
-[link](https://drive.google.com/file/d/1QUdkKN6SdeI_0CU_Dva1WR2_hahZdXwd/view?usp=sharing)
+## Previous Mini Project ##
+here is my previous mini project called "Backend SQL Definition", if you want to see the previous project, [CLICK HERE](https://github.com/diaspangestu/BRI-Bootcamp-Internship-Mini-Project1)
 
 ## API Contract
 find the api documentation at the following postmant [link](https://app.swaggerhub.com/apis-docs/Lacutee/FitaTest/1.0.0)
@@ -133,12 +133,7 @@ there are three endpoint that could use for appointment proccess, which are:
 3. Update customer data
 4. Delete customer data
 
-### Acceptance Criteria ###
-1. Make an appointment & book the schedule
-2. Validate an appointment based on coach availability
-3. Coach can decline an appointment request or reschedule it
-4. If user decline the rescheduling, then all ended (no need to provide another rescheduling)
-5. Unit test
+---
 
 ### Architecture and Design ###
 this service using onion architecture, there are 5 layers 

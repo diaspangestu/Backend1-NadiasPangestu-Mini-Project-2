@@ -10,8 +10,13 @@ import (
 )
 
 type AdminRepositoryInterface interface {
+	// admin
 	LoginAdmin(username string) (*entities.Actor, error)
 	RegisterAdmin(admin *entities.Actor) (*entities.Actor, error)
+	GetAdminById(id uint) (*entities.Actor, error)
+	UpdateAdminById(id uint, admin *entities.Actor) (*entities.Actor, error)
+	DeleteAdminById(id uint, admin *entities.Actor) error
+	// customer
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	GetCustomerById(id uint) (*entities.Customer, error)
 	GetCustomerByEmail(email string) (*entities.Customer, error)
@@ -49,6 +54,35 @@ func (repo Admin) RegisterAdmin(admin *entities.Actor) (*entities.Actor, error) 
 	}
 
 	return admin, nil
+}
+
+func (repo Admin) GetAdminById(id uint) (*entities.Actor, error) {
+	admin := &entities.Actor{}
+
+	err := repo.db.Model(&entities.Actor{}).Where("id = ?", id).First(admin).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return admin, nil
+}
+
+func (repo Admin) UpdateAdminById(id uint, admin *entities.Actor) (*entities.Actor, error) {
+	err := repo.db.Model(&entities.Actor{}).Where("id = ?", id).Save(admin).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return admin, nil
+}
+
+func (repo Admin) DeleteAdminById(id uint, admin *entities.Actor) error {
+	err := repo.db.Model(&entities.Actor{}).Where("id = ?", id).Delete(admin).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // CreateCustomer Admin

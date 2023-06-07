@@ -24,7 +24,7 @@ func NewAdminRequestHandler(db *gorm.DB) RequestHandlerAdmin {
 }
 
 func (rh RequestHandlerAdmin) LoginAdmin(c *gin.Context) {
-	request := AdminParam{}
+	request := LoginAdminParam{}
 
 	err := c.Bind(&request)
 	if err != nil {
@@ -40,7 +40,7 @@ func (rh RequestHandlerAdmin) LoginAdmin(c *gin.Context) {
 }
 
 func (rh RequestHandlerAdmin) RegisterAdmin(c *gin.Context) {
-	request := AdminParam{}
+	request := LoginAdminParam{}
 
 	err := c.Bind(&request)
 	if err != nil {
@@ -53,6 +53,67 @@ func (rh RequestHandlerAdmin) RegisterAdmin(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, res)
+}
+
+func (rh RequestHandlerAdmin) GetAdminById(c *gin.Context) {
+	id := c.Param("id")
+
+	// Parse id to uint
+	adminID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	response, err := rh.ctrl.GetAdminById(uint(adminID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (rh RequestHandlerAdmin) UpdateAdminById(c *gin.Context) {
+	id := c.Param("id")
+	request := AdminParam{}
+
+	// Bind JSON
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	// Parse id to uint
+	adminID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	response, err := rh.ctrl.UpdateAdminById(uint(adminID), request)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+func (rh RequestHandlerAdmin) DeleteAdminById(c *gin.Context) {
+	id := c.Param("id")
+
+	// Parse id to uint
+	adminID, err := strconv.ParseUint(id, 10, 0)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, dto.DefaultBadRequestResponse())
+	}
+
+	err = rh.ctrl.DeleteAdminById(uint(adminID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "Delete Admin Data Successfully",
+	})
 }
 
 // CreateCustomer Admin
