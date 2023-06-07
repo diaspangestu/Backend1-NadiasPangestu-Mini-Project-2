@@ -117,6 +117,10 @@ func (repo Admin) GetCustomerByEmail(email string) (*entities.Customer, error) {
 	return customer, nil
 }
 
+type Get struct {
+	Data []entities.Customer `json:"data"`
+}
+
 func (repo Admin) SaveCustomersFromAPI(url string) error {
 	response, err := http.Get(url)
 	if err != nil {
@@ -130,16 +134,14 @@ func (repo Admin) SaveCustomersFromAPI(url string) error {
 		return err
 	}
 
-	var customersAPIResponse struct {
-		Customer []*entities.Customer `json:"data"`
-	}
+	customersAPIResponse := new(Get)
 
-	err = json.Unmarshal(body, &customersAPIResponse)
+	err = json.Unmarshal(body, customersAPIResponse)
 	if err != nil {
 		return err
 	}
 
-	for _, customer := range customersAPIResponse.Customer {
+	for _, customer := range customersAPIResponse.Data {
 		_, err := repo.GetCustomerByEmail(customer.Email)
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {

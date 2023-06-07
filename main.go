@@ -15,7 +15,7 @@ func main() {
 	// open connection db
 	db := db.InitDB()
 
-	// Customer Handler
+	// Data Handler
 	customerHandler := customer.NewRouter(db)
 	customerHandler.Handle(router)
 

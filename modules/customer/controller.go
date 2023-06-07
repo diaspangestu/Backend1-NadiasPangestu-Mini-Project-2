@@ -22,7 +22,7 @@ func (ctrl ControllerCustomer) CreateCustomer(req CustomerParam) (interface{}, e
 	response := SuccessCreate{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Create Customer",
+			MessageTitle: "Success Create Data",
 			Message:      "Success",
 			ResponseTime: "",
 		},
@@ -46,7 +46,7 @@ func (ctrl ControllerCustomer) GetCustomerById(id uint) (interface{}, error) {
 	response := SuccessCreate{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Get Customer",
+			MessageTitle: "Success Get Data",
 			Message:      "Success",
 			ResponseTime: "",
 		},
@@ -70,7 +70,7 @@ func (ctrl ControllerCustomer) UpdateCustomerById(id uint, customer CustomerPara
 	response := SuccessUpdate{
 		Response: dto.Response{
 			Success:      true,
-			MessageTitle: "Success Update Customer",
+			MessageTitle: "Success Update Data",
 			Message:      "Success",
 			ResponseTime: "",
 		},
