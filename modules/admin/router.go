@@ -26,4 +26,5 @@ func (r RouterAdmin) Handle(router *gin.Engine) {
 	admin.POST("/create-customer", r.AdminRequestHandler.CreateCustomer)
 	admin.DELETE("/delete-customer/:id", r.AdminRequestHandler.DeleteCustomerById)
 	admin.GET("/customers", r.AdminRequestHandler.GetAllCustomers)
+	admin.GET("/fetch-customers", r.AdminRequestHandler.SaveCustomersFromAPI)
 }

@@ -1,8 +1,12 @@
 package repositories
 
 import (
+	"encoding/json"
+	"errors"
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
 	"gorm.io/gorm"
+	"io"
+	"net/http"
 )
 
 type AdminRepositoryInterface interface {
@@ -10,8 +14,11 @@ type AdminRepositoryInterface interface {
 	RegisterAdmin(admin *entities.Actor) (*entities.Actor, error)
 	CreateCustomer(customer *entities.Customer) (*entities.Customer, error)
 	GetCustomerById(id uint) (*entities.Customer, error)
+	GetCustomerByEmail(email string) (*entities.Customer, error)
 	DeleteCustomerById(id uint, customer *entities.Customer) error
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
+	FetchCustomersFromAPI() ([]*entities.Customer, error)
+	SaveCustomersFromAPI(url string) error
 }
 
 type Admin struct {
@@ -97,4 +104,62 @@ func (repo Admin) GetAllCustomers(first_name, last_name, email string, page, pag
 	}
 
 	return customers, nil
+}
+
+func (repo Admin) GetCustomerByEmail(email string) (*entities.Customer, error) {
+	customer := &entities.Customer{}
+
+	err := repo.db.Model(&entities.Customer{}).Where("email = ?", email).First(customer).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return customer, nil
+}
+
+func (repo Admin) SaveCustomersFromAPI(url string) error {
+	response, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+
+	defer response.Body.Close()
+
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+
+	var customersAPIResponse struct {
+		Customer []*entities.Customer `json:"data"`
+	}
+
+	err = json.Unmarshal(body, &customersAPIResponse)
+	if err != nil {
+		return err
+	}
+
+	for _, customer := range customersAPIResponse.Customer {
+		_, err := repo.GetCustomerByEmail(customer.Email)
+		if err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				newCustomer := &entities.Customer{
+					FirstName: customer.FirstName,
+					LastName:  customer.LastName,
+					Email:     customer.Email,
+					Avatar:    customer.Avatar,
+				}
+				_, err = repo.CreateCustomer(newCustomer)
+				if err != nil {
+					return err
+				}
+			} else {
+				return err
+			}
+		} else {
+			// customer already exist, skip saving
+		}
+	}
+
+	return nil
 }

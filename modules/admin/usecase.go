@@ -13,6 +13,7 @@ type UsecaseAdminInterface interface {
 	DeleteCustomerById(id uint) error
 	CreateCustomer(customer CustomerParam) (entities.Customer, string, error)
 	GetAllCustomers(first_name, last_name, email string, page, pageSize int) ([]*entities.Customer, error)
+	SaveCustomersFromAPI() error
 }
 
 type UsecaseAdmin struct {
@@ -100,4 +101,15 @@ func (uc UsecaseAdmin) GetAllCustomers(first_name, last_name, email string, page
 	}
 
 	return customers, nil
+}
+
+func (uc UsecaseAdmin) SaveCustomersFromAPI() error {
+	url := "https://reqres.in/api/users?page=2"
+
+	err := uc.adminRepo.SaveCustomersFromAPI(url)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -116,3 +116,12 @@ func (rh RequestHandlerAdmin) GetAllCustomers(c *gin.Context) {
 
 	c.JSON(http.StatusOK, res)
 }
+
+func (rh RequestHandlerAdmin) SaveCustomersFromAPI(c *gin.Context) {
+	res, err := rh.ctrl.SaveCustomersFromAPI()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, dto.DefaultErrorResponse())
+	}
+
+	c.JSON(http.StatusOK, res)
+}
