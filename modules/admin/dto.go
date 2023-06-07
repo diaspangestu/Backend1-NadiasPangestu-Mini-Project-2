@@ -2,7 +2,6 @@ package admin
 
 import (
 	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/dto"
-	"github.com/diaspangestu/Backend1-NadiasPangestu-Mini-Project-2/entities"
 )
 
 type LoginAdminParam struct {
@@ -12,10 +11,8 @@ type LoginAdminParam struct {
 }
 
 type AdminParam struct {
-	Username   string          `gorm:"column:username;unique"`
-	RoleID     int             `gorm:"column:role_id"`
-	IsVerified entities.Status `gorm:"column:is_verified;type enum('true','false')"`
-	IsActived  entities.Status `gorm:"column:is_actived;type enum('true','false')"`
+	Username string `gorm:"column:username;unique"`
+	Password string `gorm:"column:password"`
 }
 
 type CustomerParam struct {

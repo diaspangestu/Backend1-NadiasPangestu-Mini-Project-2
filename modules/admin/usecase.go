@@ -77,6 +77,8 @@ func (uc UsecaseAdmin) GetAdminById(id uint) (entities.Actor, error) {
 }
 
 func (uc UsecaseAdmin) UpdateCustomerById(id uint, admin AdminParam) (entities.Actor, error) {
+	hashPass := helpers.HashPass(admin.Password)
+
 	// Get Existing Admin Data
 	existingAdmin, err := uc.adminRepo.GetAdminById(id)
 	if err != nil {
@@ -84,9 +86,7 @@ func (uc UsecaseAdmin) UpdateCustomerById(id uint, admin AdminParam) (entities.A
 	}
 
 	existingAdmin.Username = admin.Username
-	existingAdmin.RoleID = admin.RoleID
-	existingAdmin.IsVerified = admin.IsVerified
-	existingAdmin.IsActived = admin.IsActived
+	existingAdmin.Password = hashPass
 	existingAdmin.UpdatedAt = time.Now()
 
 	// Updated the Admin Data

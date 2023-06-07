@@ -72,10 +72,8 @@ func (ctrl ControllerAdmin) GetAdminById(id uint) (interface{}, error) {
 			ResponseTime: "",
 		},
 		Data: AdminParam{
-			Username:   admin.Username,
-			RoleID:     admin.RoleID,
-			IsVerified: admin.IsVerified,
-			IsActived:  admin.IsActived,
+			Username: admin.Username,
+			Password: admin.Password,
 		},
 	}
 
@@ -96,10 +94,8 @@ func (ctrl ControllerAdmin) UpdateAdminById(id uint, admin AdminParam) (interfac
 			ResponseTime: "",
 		},
 		Data: AdminParam{
-			Username:   updatedAdmin.Username,
-			RoleID:     updatedAdmin.RoleID,
-			IsVerified: updatedAdmin.IsVerified,
-			IsActived:  updatedAdmin.IsActived,
+			Username: updatedAdmin.Username,
+			Password: updatedAdmin.Password,
 		},
 	}
 
